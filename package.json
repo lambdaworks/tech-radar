@@ -1,0 +1,23 @@
+{
+  "name": "lambdaworks-tech-radar",
+  "version": "2022.5.0",
+  "description": "Visualizing our technology choices",
+  "homepage": "https://github.com/lambdaworks/tech-radar#readme",
+  "repository": "https://github.com/lambdaworks/tech-radar.git",
+  "license": "MIT",
+  "devDependencies": {
+    "browser-sync": "^2.29.3",
+    "eslint": "^8.42.0",
+    "htmllint-cli": "^0.0.7",
+    "socket.io": "^4.6.2"
+  },
+  "resolutions": {
+    "yargs-parser": "21.1.1"
+  },
+  "scripts": {
+    "start": "browser-sync -w",
+    "lint": "npm run lint:js && npm run lint:html",
+    "lint:js": "eslint *.js",
+    "lint:html": "htmllint *.html"
+  }
+}
