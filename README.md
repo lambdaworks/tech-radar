@@ -45,7 +45,7 @@ http://localhost:3000/
 ```
 
 ## Credits
-This Tech Radar was created based on the open source [Zalando tech radar](https://github.com/zalando/tech-radar).
+This Tech Radar was created based on the open source [Zalando Tech Radar](https://github.com/zalando/tech-radar).
 
 ## License
 
