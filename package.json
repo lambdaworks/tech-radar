@@ -1,6 +1,6 @@
 {
   "name": "lambdaworks-tech-radar",
-  "version": "2022.5.0",
+  "version": "2024.2.0",
   "description": "Visualizing our technology choices",
   "homepage": "https://github.com/lambdaworks/tech-radar#readme",
   "repository": "https://github.com/lambdaworks/tech-radar.git",
@@ -9,10 +9,10 @@
     "doc": "docs"
   },
   "devDependencies": {
-    "browser-sync": "^2.29.3",
-    "eslint": "^8.42.0",
+    "browser-sync": "^3.0.2",
+    "eslint": "^8.56.0",
     "htmllint-cli": "^0.0.7",
-    "socket.io": "^4.6.2"
+    "socket.io": "^4.7.4"
   },
   "resolutions": {
     "yargs-parser": "21.1.1"
