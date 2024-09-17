@@ -11,17 +11,17 @@ We use six rings with the following semantics:
              Low risk and recommended to be widely used.
 * __TRIAL__: Technologies that we believe should be adopted in the future and we have started to incorporate them,
              but we're yet to have serious usage experience with them before we would consider them a general recommendation.
-* __ASSESS__:Technologies that we believe could be of value to us in the future, but we're still in a research and
+* __ASSESS__: Technologies that we believe could be of value to us in the future, but we're still in a research and
              experimentation phase to assess whether our confidence in them is high enough to apply them on a project.
 * __HOLD__: Technologies we have adopted in the past and we have existing projects relying on them, we plan to keep
             using them on the existing projects, but we prefer not applying them on new projects.
-* __PHASE OUT__: Techologies we have adopted in the past and we have existing projects relying on them, but we've decided
+* __PHASE OUT__: Technologies we have adopted in the past and we have existing projects relying on them, but we've decided
                  to gradually reduce dependency on them.
-* __OPT OUT__: Techologies that we've either concluded not to adopt based on assessment or we have adopted in the past and have phased out.
+* __OPT OUT__: Technologies that we've either concluded not to adopt based on assessment or we have adopted in the past and have phased out.
 
 ## Contributing
 The technologies included in the radar are maintained in the `entries` json-array defined
-in `index.html`, ordered in alphabetical order. If you wish to add a techology or change
+in `index.html`, ordered in alphabetical order. If you wish to add a technology or change
 the positioning of an existing one, please open a pull-request with a change to `entries`.
 
 ## Local Development
