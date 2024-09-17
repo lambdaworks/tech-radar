@@ -3,15 +3,14 @@
 ### 📄 Overview
 _Provide a brief summary of the technology you're suggesting or proposing to change._
 
-- **Technology Name**: _e.g., TypeScript, Docker, etc._
-- **Category**: _e.g., Framework, Tool, Language, Platform, etc._
+- **Technology Name**: _e.g. TypeScript, Docker, etc._
+- **Category**: _e.g. Framework, Tool, Language, Platform, etc._
+- **Old State**: _e.g. ADOPT, TRIAL, ASSESS, HOLD, PHASE OUT, OPT OUT_
+- **Suggested State**: _e.g. ADOPT, TRIAL, ASSESS, HOLD, PHASE OUT, OPT OUT_
 - **New/Change**: _Is this a suggestion for a new technology or a modification to an existing one?_
 
 ### 🔍 Reason for Suggestion
 _Explain why you believe this technology should be added or changed. Focus on the key benefits or improvements it will bring._
-
-- **Problem to Solve**: _What challenge or limitation does this technology address?_
-- **Key Benefits**: _e.g., Performance improvement, scalability, developer experience, etc._
 
 ### 🎯 Expected Impact
 _Describe how this technology could impact the project or team. Include both positive effects and any potential risks or challenges._

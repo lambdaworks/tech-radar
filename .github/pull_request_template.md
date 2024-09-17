@@ -5,13 +5,12 @@ _Provide a concise summary of the technology being added or changed._
 
 - **Technology Name**: _e.g., React, Kubernetes, etc._
 - **Category**: _e.g., Framework, Tool, Language, etc._
+- **Old State**: _e.g. ADOPT, TRIAL, ASSESS, HOLD, PHASE OUT, OPT OUT_
+- **New State**: _e.g. ADOPT, TRIAL, ASSESS, HOLD, PHASE OUT, OPT OUT_
 - **New/Change**: _Is this a new addition or a change to an existing technology?_
 
 ### 🔍 Rationale
 _Explain why this technology is being introduced or modified. What problems does it solve? What are the benefits over existing options?_
-
-- **Why**: _e.g., Improves scalability, faster development, better community support, etc._
-- **Alternatives Considered**: _Were other technologies considered? Why were they rejected?_
 
 ### 🎯 Impact
 _Describe how this change impacts the project or team. Include potential risks or concerns._
