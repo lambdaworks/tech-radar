@@ -1,7 +1,7 @@
 // The MIT License (MIT)
 
-// Copyright (c) 2017 Zalando SE
-// Copyright (c) 2023 LambdaWorks
+// Copyright (c) 2017-2024 Zalando SE
+// Copyright (c) 2023-2025 LambdaWorks
 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,34 @@
 
 
 function radar_visualization(config) {
+  config.svg_id = config.svg || "radar";
+  config.width = config.width || 1450;
+  config.height = config.height || 1000;
+  config.colors = ("colors" in config) ? config.colors : {
+      background: "#fff",
+      grid: '#dddde0',
+      inactive: "#ddd"
+    };
+  config.print_layout = ("print_layout" in config) ? config.print_layout : true;
+  config.links_in_new_tabs = ("links_in_new_tabs" in config) ? config.links_in_new_tabs : true;
+  config.repo_url = config.repo_url || '#';
+  config.print_ring_descriptions_table = ("print_ring_descriptions_table" in config) ? config.print_ring_descriptions_table : false;
+  config.legend_offset = config.legend_offset || [
+    { x: 450, y: 90 },
+    { x: -675, y: 90 },
+    { x: -675, y: -310 },
+    { x: 450, y: -310 }
+  ]
+  config.title_offset = config.title_offset || { x: -675, y: -420 };
+  config.footer_offset = config.footer_offset || { x: -155, y: 450 };
+  config.legend_column_width = config.legend_column_width || 140
+  config.legend_line_height = config.legend_line_height || 10
 
   // custom random number generator, to make random sequence reproducible
   // source: https://stackoverflow.com/questions/521295
-  var seed = 42;
+  let seed = 42;
   function random() {
-    var x = Math.sin(seed++) * 10000;
+    let x = Math.sin(seed++) * 10000;
     return x - Math.floor(x);
   }
 
@@ -57,22 +79,9 @@ function radar_visualization(config) {
     { radius: 490 },
   ];
 
-  const title_offset =
-    { x: -675, y: -420 };
-
-  const footer_offset =
-    { x: -64, y: 520 };
-
-  const legend_offset = [
-    { x: 470, y: 90 },
-    { x: -675, y: 90 },
-    { x: -675, y: -310 },
-    { x: 470, y: -310 }
-  ];
-
   function polar(cartesian) {
-    var x = cartesian.x;
-    var y = cartesian.y;
+    let x = cartesian.x;
+    let y = cartesian.y;
     return {
       t: Math.atan2(y, x),
       r: Math.sqrt(x * x + y * y)
@@ -87,8 +96,8 @@ function radar_visualization(config) {
   }
 
   function bounded_interval(value, min, max) {
-    var low = Math.min(min, max);
-    var high = Math.max(min, max);
+    let low = Math.min(min, max);
+    let high = Math.max(min, max);
     return Math.min(Math.max(value, low), high);
   }
 
@@ -107,19 +116,19 @@ function radar_visualization(config) {
   }
 
   function segment(quadrant, ring) {
-    var polar_min = {
+    let polar_min = {
       t: quadrants[quadrant].radial_min * Math.PI,
       r: ring === 0 ? 30 : rings[ring - 1].radius
     };
-    var polar_max = {
+    let polar_max = {
       t: quadrants[quadrant].radial_max * Math.PI,
       r: rings[ring].radius
     };
-    var cartesian_min = {
+    let cartesian_min = {
       x: 15 * quadrants[quadrant].factor_x,
       y: 15 * quadrants[quadrant].factor_y
     };
-    var cartesian_max = {
+    let cartesian_max = {
       x: rings[5].radius * quadrants[quadrant].factor_x,
       y: rings[5].radius * quadrants[quadrant].factor_y
     };
@@ -146,10 +155,10 @@ function radar_visualization(config) {
   }
 
   // position each entry randomly in its segment
-  for (var i = 0; i < config.entries.length; i++) {
-    var entry = config.entries[i];
+  for (let i = 0; i < config.entries.length; i++) {
+    let entry = config.entries[i];
     entry.segment = segment(entry.quadrant, entry.ring);
-    var point = entry.segment.random();
+    let point = entry.segment.random();
     entry.x = point.x;
     entry.y = point.y;
     entry.color = entry.active || config.print_layout ?
@@ -157,25 +166,25 @@ function radar_visualization(config) {
   }
 
   // partition entries according to segments
-  var segmented = new Array(4);
-  for (var quadrant = 0; quadrant < 4; quadrant++) {
+  let segmented = new Array(4);
+  for (let quadrant = 0; quadrant < 4; quadrant++) {
     segmented[quadrant] = new Array(rings.length);
-    for (var ring = 0; ring < rings.length; ring++) {
+    for (let ring = 0; ring < rings.length; ring++) {
       segmented[quadrant][ring] = [];
     }
   }
-  for (var i=0; i<config.entries.length; i++) {
-    var entry = config.entries[i];
+  for (let i=0; i<config.entries.length; i++) {
+    let entry = config.entries[i];
     segmented[entry.quadrant][entry.ring].push(entry);
   }
 
   // assign unique sequential id to each entry
-  var id = 1;
-  for (var quadrant of [2,3,1,0]) {
-    for (var ring = 0; ring < rings.length; ring++) {
-      var entries = segmented[quadrant][ring];
+  let id = 1;
+  for (let quadrant of [2,3,1,0]) {
+    for (let ring = 0; ring < rings.length; ring++) {
+      let entries = segmented[quadrant][ring];
       entries.sort(function(a,b) { return a.label.localeCompare(b.label); })
-      for (var i=0; i<entries.length; i++) {
+      for (let i=0; i<entries.length; i++) {
         entries[i].id = "" + id++;
       }
     }
@@ -194,19 +203,27 @@ function radar_visualization(config) {
     ].join(" ");
   }
 
-  var svg = d3.select("svg#" + config.svg_id)
-    .style("background-color", config.colors.background)
-    .attr("width", config.width)
-    .attr("height", config.height);
+  // adjust with config.scale.
+  config.scale = config.scale || 1;
+  let scaled_width = config.width * config.scale;
+  let scaled_height = config.height * config.scale;
 
-  var radar = svg.append("g");
+  let svg = d3.select("svg#" + config.svg_id)
+    .style("background-color", config.colors.background)
+    .attr("width", scaled_width)
+    .attr("height", scaled_height);
+
+  let radar = svg.append("g");
   if ("zoomed_quadrant" in config) {
     svg.attr("viewBox", viewbox(config.zoomed_quadrant));
   } else {
-    radar.attr("transform", translate(config.width / 2, config.height / 2));
+    radar.attr("transform", translate(scaled_width / 2, scaled_height / 2).concat(`scale(${config.scale})`));
   }
 
-  var grid = radar.append("g");
+  let grid = radar.append("g");
+
+  // define default font-family
+  config.font_family = config.font_family || "Arial, Helvetica";
 
   // draw grid lines
   grid.append("line")
@@ -222,8 +239,8 @@ function radar_visualization(config) {
 
   // background color. Usage `.attr("filter", "url(#solid)")`
   // SOURCE: https://stackoverflow.com/a/31013492/2609980
-  var defs = grid.append("defs");
-  var filter = defs.append("filter")
+  let defs = grid.append("defs");
+  let filter = defs.append("filter")
     .attr("x", 0)
     .attr("y", 0)
     .attr("width", 1)
@@ -235,7 +252,7 @@ function radar_visualization(config) {
     .attr("in", "SourceGraphic");
 
   // draw rings
-  for (var i = 0; i < rings.length; i++) {
+  for (let i = 0; i < rings.length; i++) {
     grid.append("circle")
       .attr("cx", 0)
       .attr("cy", 0)
@@ -250,7 +267,7 @@ function radar_visualization(config) {
         .attr("text-anchor", "middle")
         .style("fill", config.rings[i].color)
         .style("opacity", 0.35)
-        .style("font-family", "Arial, Helvetica")
+        .style("font-family", config.font_family)
         .style("font-size", "42px")
         .style("font-weight", "bold")
         .style("pointer-events", "none")
@@ -258,65 +275,71 @@ function radar_visualization(config) {
     }
   }
 
-  function legend_transform(quadrant, ring, index=null) {
-    var dx = ring < 3 ? 0 : 140;
-    var dy = (index == null ? -16 : index * 12);
-    if (ring % 3 === 1) {
-      dy = dy + 36 + segmented[quadrant][ring-1].length * 12;
-    } else if (ring % 3 === 2) {
-      dy = dy + 72 + (segmented[quadrant][ring-2].length + segmented[quadrant][ring-1].length) * 12;
+  function legend_transform(quadrant, ring, legendColumnWidth, index=null, previousHeight = null) {
+    const dx = ring < 2 ? 0 : legendColumnWidth;
+    let dy = (index == null ? -16 : index * config.legend_line_height);
+
+    if (ring % 2 === 1) {
+      dy = dy + 36 + previousHeight;
     }
+
     return translate(
-      legend_offset[quadrant].x + dx,
-      legend_offset[quadrant].y + dy
+      config.legend_offset[quadrant].x + dx,
+      config.legend_offset[quadrant].y + dy
     );
   }
 
   // draw title and legend (only in print layout)
   if (config.print_layout) {
-
     // title
-    radar.append("text")
-      .attr("transform", translate(title_offset.x, title_offset.y))
+    radar.append("a")
+      .attr("href", config.repo_url)
+      .attr("transform", translate(config.title_offset.x, config.title_offset.y))
+      .append("text")
+      .attr("class", "hover-underline")  // add class for hover effect
       .text(config.title)
-      .style("font-family", "Arial, Helvetica")
+      .style("font-family", config.font_family)
       .style("font-size", "30")
       .style("font-weight", "bold")
 
     // date
     radar
       .append("text")
-      .attr("transform", translate(title_offset.x, title_offset.y + 20))
+      .attr("transform", translate(config.title_offset.x, config.title_offset.y + 20))
       .text(config.date || "")
-      .style("font-family", "Arial, Helvetica")
+      .style("font-family", config.font_family)
       .style("font-size", "14")
       .style("fill", "#999")
 
     // footer
     radar.append("text")
-      .attr("transform", translate(footer_offset.x, footer_offset.y))
-      .text("▲ moved up     ▼ moved down")
+      .attr("transform", translate(config.footer_offset.x, config.footer_offset.y))
+      .text("▲ moved up     ▼ moved down     ★ new     ⬤ no change")
       .attr("xml:space", "preserve")
-      .style("font-family", "Arial, Helvetica")
-      .style("font-size", "10px");
+      .style("font-family", config.font_family)
+      .style("font-size", "12px");
 
     // legend
-    var legend = radar.append("g");
-    for (var quadrant = 0; quadrant < 4; quadrant++) {
+    const legend = radar.append("g");
+    for (let quadrant = 0; quadrant < 4; quadrant++) {
       legend.append("text")
         .attr("transform", translate(
-          legend_offset[quadrant].x,
-          legend_offset[quadrant].y - 45
+          config.legend_offset[quadrant].x,
+          config.legend_offset[quadrant].y - 45
         ))
         .text(config.quadrants[quadrant].name)
-        .style("font-family", "Arial, Helvetica")
+        .style("font-family", config.font_family)
         .style("font-size", "18px")
         .style("font-weight", "bold");
-      for (var ring = 0; ring < rings.length; ring++) {
+      let previousLegendHeight = 0
+      for (let ring = 0; ring < 4; ring++) {
+        if (ring % 2 === 0) {
+          previousLegendHeight = 0
+        }
         legend.append("text")
-          .attr("transform", legend_transform(quadrant, ring))
+          .attr("transform", legend_transform(quadrant, ring, config.legend_column_width, null, previousLegendHeight))
           .text(config.rings[ring].name)
-          .style("font-family", "Arial, Helvetica")
+          .style("font-family", config.font_family)
           .style("font-size", "12px")
           .style("font-weight", "bold")
           .style("fill", config.rings[ring].color);
@@ -324,32 +347,81 @@ function radar_visualization(config) {
           .data(segmented[quadrant][ring])
           .enter()
             .append("a")
-              .attr("href", function (d, i) {
-                 return d.link ? d.link : "#"; // stay on same page if no link was provided
+              .attr("href", function (d, _) {
+                 return d.link ? d.link : "#"; // stay on the same page if no link was provided
               })
-              // Add a target if (and only if) there is a link and we want new tabs
-              .attr("target", function (d, i) {
+              // Add a target if (and only if) there is a link, and we want new tabs
+              .attr("target", function (d, _) {
                  return (d.link && config.links_in_new_tabs) ? "_blank" : null;
               })
             .append("text")
-              .attr("transform", function(d, i) { return legend_transform(quadrant, ring, i); })
+              .attr("transform", function(d, i) { return legend_transform(quadrant, ring, config.legend_column_width, i, previousLegendHeight); })
               .attr("class", "legend" + quadrant + ring)
-              .attr("id", function(d, i) { return "legendItem" + d.id; })
-              .text(function(d, i) { return d.id + ". " + d.label; })
-              .style("font-family", "Arial, Helvetica")
+              .attr("id", function(d, _) { return "legendItem" + d.id; })
+              .text(function(d) { return d.id + ". " + d.label; })
+              .style("font-family", config.font_family)
               .style("font-size", "11px")
-              .on("mouseover", function(d) { showBubble(d); highlightLegendItem(d); })
-              .on("mouseout", function(d) { hideBubble(d); unhighlightLegendItem(d); });
+              .on("mouseover", function(event, d) { showBubble(d); highlightLegendItem(d); })
+              .on("mouseout", function(event, d) { hideBubble(d); unhighlightLegendItem(d); })
+              .call(wrap_text)
+              .each(function() {
+                previousLegendHeight += d3.select(this).node().getBBox().height;
+              });
       }
     }
   }
 
+  function wrap_text(text) {
+    let heightForNextElement = 0;
+
+    text.each(function() {
+      const textElement = d3.select(this);
+      const words = textElement.text().split(" ");
+      let line = [];
+
+      // Use '|' at the end of the string so that spaces are not trimmed during rendering.
+      const number = `${textElement.text().split(".")[0]}. |`;
+      const legendNumberText = textElement.append("tspan").text(number);
+      const legendBar = textElement.append("tspan").text('|');
+      const numberWidth = legendNumberText.node().getComputedTextLength() - legendBar.node().getComputedTextLength();
+
+      textElement.text(null);
+
+      let tspan = textElement
+          .append("tspan")
+          .attr("x", 0)
+          .attr("y", heightForNextElement)
+          .attr("dy", 0);
+
+      for (let position = 0; position < words.length; position++) {
+        line.push(words[position]);
+        tspan.text(line.join(" "));
+
+        // Avoid wrap for first line (position !== 1) to not end up in a situation where the long text without
+        // whitespace is wrapped (causing the first line near the legend number to be blank).
+        if (tspan.node().getComputedTextLength() > config.legend_column_width && position !== 1) {
+          line.pop();
+          tspan.text(line.join(" "));
+          line = [words[position]];
+
+          tspan = textElement.append("tspan")
+              .attr("x", numberWidth)
+              .attr("dy", config.legend_line_height)
+              .text(words[position]);
+        }
+      }
+
+      const textBoundingBox = textElement.node().getBBox();
+      heightForNextElement = textBoundingBox.y + textBoundingBox.height;
+    });
+  }
+
   // layer for entries
-  var rink = radar.append("g")
+  let rink = radar.append("g")
     .attr("id", "rink");
 
   // rollover bubble (on top of everything else)
-  var bubble = radar.append("g")
+  let bubble = radar.append("g")
     .attr("id", "bubble")
     .attr("x", 0)
     .attr("y", 0)
@@ -361,7 +433,7 @@ function radar_visualization(config) {
     .attr("ry", 4)
     .style("fill", "#333");
   bubble.append("text")
-    .style("font-family", "sans-serif")
+    .style("font-family", config.font_family)
     .style("font-size", "10px")
     .style("fill", "#fff");
   bubble.append("path")
@@ -370,9 +442,9 @@ function radar_visualization(config) {
 
   function showBubble(d) {
     if (d.active || config.print_layout) {
-      var tooltip = d3.select("#bubble text")
+      let tooltip = d3.select("#bubble text")
         .text(d.label);
-      var bbox = tooltip.node().getBBox();
+      let bbox = tooltip.node().getBBox();
       d3.select("#bubble")
         .attr("transform", translate(d.x - bbox.width / 2, d.y - 16))
         .style("opacity", 0.8);
@@ -386,37 +458,37 @@ function radar_visualization(config) {
     }
   }
 
-  function hideBubble(d) {
-    var bubble = d3.select("#bubble")
+  function hideBubble(_) {
+    d3.select("#bubble")
       .attr("transform", translate(0,0))
       .style("opacity", 0);
   }
 
   function highlightLegendItem(d) {
-    var legendItem = document.getElementById("legendItem" + d.id);
+    let legendItem = document.getElementById("legendItem" + d.id);
     legendItem.setAttribute("filter", "url(#solid)");
     legendItem.setAttribute("fill", "white");
   }
 
   function unhighlightLegendItem(d) {
-    var legendItem = document.getElementById("legendItem" + d.id);
+    let legendItem = document.getElementById("legendItem" + d.id);
     legendItem.removeAttribute("filter");
     legendItem.removeAttribute("fill");
   }
 
   // draw blips on radar
-  var blips = rink.selectAll(".blip")
+  let blips = rink.selectAll(".blip")
     .data(config.entries)
     .enter()
       .append("g")
         .attr("class", "blip")
-        .attr("transform", function(d, i) { return legend_transform(d.quadrant, d.ring, i); })
-        .on("mouseover", function(d) { showBubble(d); highlightLegendItem(d); })
-        .on("mouseout", function(d) { hideBubble(d); unhighlightLegendItem(d); });
+        .attr("transform", function(d, i) { return legend_transform(d.quadrant, d.ring, config.legend_column_width, i); })
+        .on("mouseover", function(event, d) { showBubble(d); highlightLegendItem(d); })
+        .on("mouseout", function(event, d) { hideBubble(d); unhighlightLegendItem(d); });
 
   // configure each blip
   blips.each(function(d) {
-    var blip = d3.select(this);
+    let blip = d3.select(this);
 
     // blip link
     if (d.active && Object.prototype.hasOwnProperty.call(d, "link") && d.link) {
@@ -429,13 +501,17 @@ function radar_visualization(config) {
     }
 
     // blip shape
-    if (d.moved > 0) {
+    if (d.moved === 1) {
       blip.append("path")
         .attr("d", "M -11,5 11,5 0,-13 z") // triangle pointing up
         .style("fill", d.color);
-    } else if (d.moved < 0) {
+    } else if (d.moved === -1) {
       blip.append("path")
         .attr("d", "M -11,-5 11,-5 0,13 z") // triangle pointing down
+        .style("fill", d.color);
+    } else if (d.moved === 2) {
+      blip.append("path")
+        .attr("d", d3.symbol().type(d3.symbolStar).size(200))
         .style("fill", d.color);
     } else {
       blip.append("circle")
@@ -445,14 +521,14 @@ function radar_visualization(config) {
 
     // blip text
     if (d.active || config.print_layout) {
-      var blip_text = config.print_layout ? d.id : d.label.match(/[a-z]/i);
+      let blip_text = config.print_layout ? d.id : d.label.match(/[a-z]/i);
       blip.append("text")
         .text(blip_text)
         .attr("y", 3)
         .attr("text-anchor", "middle")
         .style("fill", "#fff")
-        .style("font-family", "Arial, Helvetica")
-        .style("font-size", function(d) { return blip_text.length > 2 ? "8px" : "9px"; })
+        .style("font-family", config.font_family)
+        .style("font-size", function(_) { return blip_text.length > 2 ? "8px" : "9px"; })
         .style("pointer-events", "none")
         .style("user-select", "none");
     }
@@ -471,4 +547,55 @@ function radar_visualization(config) {
     .velocityDecay(0.19) // magic number (found by experimentation)
     .force("collision", d3.forceCollide().radius(12).strength(0.85))
     .on("tick", ticked);
+
+  function ringDescriptionsTable() {
+    let table = d3.select("body").append("table")
+      .attr("class", "radar-table")
+      .style("border-collapse", "collapse")
+      .style("position", "relative")
+      .style("top", "-70px")  // Adjust this value to move the table closer vertically
+      .style("margin-left", "50px")
+      .style("margin-right", "50px")
+      .style("font-family", config.font_family)
+      .style("font-size", "13px")
+      .style("text-align", "left");
+
+    let thead = table.append("thead");
+    let tbody = table.append("tbody");
+
+    // define a fixed width for each column
+    let columnWidth = `${100 / config.rings.length}%`;
+
+    // create a table header row with ring names
+    let headerRow = thead.append("tr")
+      .style("border", "1px solid #ddd");
+
+    headerRow.selectAll("th")
+      .data(config.rings)
+      .enter()
+      .append("th")
+      .style("padding", "8px")
+      .style("border", "1px solid #ddd")
+      .style("background-color", d => d.color)
+      .style("color", "#fff")
+      .style("width", columnWidth)
+      .text(d => d.name);
+
+    // create a table body row with descriptions
+    let descriptionRow = tbody.append("tr")
+      .style("border", "1px solid #ddd");
+
+    descriptionRow.selectAll("td")
+      .data(config.rings)
+      .enter()
+      .append("td")
+      .style("padding", "8px")
+      .style("border", "1px solid #ddd")
+      .style("width", columnWidth)
+      .text(d => d.description);
+  }
+
+  if (config.print_ring_descriptions_table) {
+    ringDescriptionsTable();
+  }
 }
