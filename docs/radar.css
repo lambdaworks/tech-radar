@@ -1,5 +1,14 @@
+@font-face {
+    font-family: 'Moderat Extended Regular';
+    src: local('Moderat-Regular'),
+    url('./fonts/moderat-extended-regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
 body {
-    font-family: 'Source Sans Pro', arial, helvetica, sans-serif;
+    font-family: 'Moderat Extended Regular', 'Source Sans Pro',
+    Arial, Helvetica, sans-serif;
     padding-bottom: 50px;
 }
 
