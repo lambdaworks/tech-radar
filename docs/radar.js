@@ -27,9 +27,10 @@ function radar_visualization(config) {
     config.width = config.width || 1450;
     config.height = config.height || 1000;
     config.colors = ("colors" in config) ? config.colors : {
-        background: "#fff",
+        background: '#fff',
         grid: '#dddde0',
-        inactive: "#ddd"
+        inactive: '#ddd',
+        blip_stroke: '#dddde0'
     };
     config.print_layout = ("print_layout" in config) ? config.print_layout : true;
     config.links_in_new_tabs = ("links_in_new_tabs" in config) ? config.links_in_new_tabs : true;
@@ -167,8 +168,8 @@ function radar_visualization(config) {
     }
 
     // partition entries according to segments
-    let segmented = new Array(4);
-    for (let quadrant = 0; quadrant < 4; quadrant++) {
+    let segmented = new Array(rings.length);
+    for (let quadrant = 0; quadrant < quadrants.length; quadrant++) {
         segmented[quadrant] = new Array(rings.length);
         for (let ring = 0; ring < rings.length; ring++) {
             segmented[quadrant][ring] = [];
@@ -269,7 +270,7 @@ function radar_visualization(config) {
                 .attr("y", -rings[i].radius + 62)
                 .attr("text-anchor", "middle")
                 .style("fill", config.rings[i].color)
-                .style("opacity", 0.35)
+                .style("opacity", 0.65)
                 .style("font-family", config.font_family)
                 .style("font-size", "42px")
                 .style("font-weight", "bold")
@@ -279,11 +280,13 @@ function radar_visualization(config) {
     }
 
     function legend_transform(quadrant, ring, legendColumnWidth, index = null, previousHeight = null) {
-        const dx = ring < 2 ? 0 : legendColumnWidth;
-        let dy = (index == null ? -16 : index * config.legend_line_height);
+        let dx = ring < 3 ? 0 : 140;
+        let dy = (index == null ? -16 : index * 12);
 
-        if (ring % 2 === 1) {
-            dy = dy + 36 + previousHeight;
+        if (ring % 3 === 1) {
+            dy = dy + 50 + segmented[quadrant][ring - 1].length * 12;
+        } else if (ring % 3 === 2) {
+            dy = dy + 100 + (segmented[quadrant][ring - 2].length + segmented[quadrant][ring - 1].length) * 12;
         }
 
         return translate(
@@ -324,7 +327,7 @@ function radar_visualization(config) {
 
         // legend
         const legend = radar.append("g");
-        for (let quadrant = 0; quadrant < 4; quadrant++) {
+        for (let quadrant = 0; quadrant < quadrants.length; quadrant++) {
             legend.append("text")
                 .attr("transform", translate(
                     config.legend_offset[quadrant].x,
@@ -335,8 +338,8 @@ function radar_visualization(config) {
                 .style("font-size", "18px")
                 .style("font-weight", "bold");
             let previousLegendHeight = 0
-            for (let ring = 0; ring < 4; ring++) {
-                if (ring % 2 === 0) {
+            for (let ring = 0; ring < rings.length; ring++) {
+                if (ring > 2) {
                     previousLegendHeight = 0
                 }
                 legend.append("text")
@@ -412,7 +415,7 @@ function radar_visualization(config) {
                 line.push(words[position]);
                 tspan.text(line.join(" "));
 
-                // Avoid wrap for first line (position !== 1) to not end up in a situation where the long text without
+                // Avoid wrap for the first line (position !== 1) to not end up in a situation where the long text without
                 // whitespace is wrapped (causing the first line near the legend number to be blank).
                 if (tspan.node().getComputedTextLength() > config.legend_column_width && position !== 1) {
                     line.pop();
@@ -527,19 +530,28 @@ function radar_visualization(config) {
         if (d.moved === 1) {
             blip.append("path")
                 .attr("d", "M -11,5 11,5 0,-13 z") // triangle pointing up
-                .style("fill", d.color);
+                .style("fill", d.color)
+                .attr("stroke", config.colors.blip_stroke)
+                .attr("stroke-width", 0.5);
         } else if (d.moved === -1) {
             blip.append("path")
                 .attr("d", "M -11,-5 11,-5 0,13 z") // triangle pointing down
-                .style("fill", d.color);
+                .style("fill", d.color)
+                .attr("stroke", config.colors.blip_stroke)
+                .attr("stroke-width", 0.5);
         } else if (d.moved === 2) {
             blip.append("path")
                 .attr("d", d3.symbol().type(d3.symbolStar).size(200))
-                .style("fill", d.color);
+                .style("fill", d.color)
+                .attr("stroke", config.colors.blip_stroke)
+                .attr("stroke-width", 0.5);
         } else {
             blip.append("circle")
                 .attr("r", 9)
-                .attr("fill", d.color);
+                .attr("fill", d.color)
+                .attr("stroke", config.colors.blip_stroke)
+                .attr("stroke-width", 0.5);
+
         }
 
         // blip text
@@ -566,7 +578,7 @@ function radar_visualization(config) {
         })
     }
 
-    // distribute blips, while avoiding collisions
+    // distribute blips while avoiding collisions
     d3.forceSimulation()
         .nodes(config.entries)
         .velocityDecay(0.19) // magic number (found by experimentation)
