@@ -1,5 +1,5 @@
 {
-  "date": "2023.10",
+  "date": "2025.08",
   "entries": [
     {
       "quadrant": 1,
@@ -150,10 +150,10 @@
     },
     {
       "quadrant": 3,
-      "ring": 1,
+      "ring": 3,
       "label": "Edge Functions",
       "active": true,
-      "moved": 0
+      "moved": -1
     },
     {
       "quadrant": 2,
@@ -574,6 +574,20 @@
       "label": "Pekko",
       "active": true,
       "moved": 1
+    },
+    {
+      "quadrant": 3,
+      "ring": 0,
+      "label": "IAC",
+      "active": true,
+      "moved": 2
+    },
+    {
+      "quadrant": 3,
+      "ring": 0,
+      "label": "CI/CD",
+      "active": true,
+      "moved": 2
     }
   ]
 }
