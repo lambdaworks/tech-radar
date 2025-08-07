@@ -51,7 +51,7 @@
       "moved": 0
     },
     {
-      "quadrant": 1,
+      "quadrant": 2,
       "ring": 3,
       "label": "AWS Keyspaces",
       "active": true,
@@ -136,10 +136,10 @@
     },
     {
       "quadrant": 2,
-      "ring": 1,
+      "ring": 0,
       "label": "Druid",
       "active": true,
-      "moved": 0
+      "moved": 1
     },
     {
       "quadrant": 2,
@@ -234,10 +234,10 @@
     },
     {
       "quadrant": 2,
-      "ring": 1,
+      "ring": 0,
       "label": "Kinesis",
       "active": true,
-      "moved": 0
+      "moved": 1
     },
     {
       "quadrant": 0,
@@ -276,10 +276,10 @@
     },
     {
       "quadrant": 2,
-      "ring": 1,
+      "ring": 0,
       "label": "Milvus",
       "active": true,
-      "moved": 0
+      "moved": 1
     },
     {
       "quadrant": 0,
@@ -333,9 +333,23 @@
     {
       "quadrant": 2,
       "ring": 0,
-      "label": "Postgres",
+      "label": "PostgreSQL",
       "active": true,
       "moved": 0
+    },
+    {
+      "quadrant": 2,
+      "ring": 3,
+      "label": "MySQL",
+      "active": true,
+      "moved": 2
+    },
+    {
+      "quadrant": 2,
+      "ring": 2,
+      "label": "MongoDB",
+      "active": true,
+      "moved": 2
     },
     {
       "quadrant": 0,
@@ -373,11 +387,18 @@
       "moved": 0
     },
     {
+      "quadrant": 2,
+      "ring": 0,
+      "label": "Valkey",
+      "active": true,
+      "moved": 2
+    },
+    {
       "quadrant": 1,
-      "ring": 2,
+      "ring": 3,
       "label": "Redshift",
       "active": true,
-      "moved": 0
+      "moved": -1
     },
     {
       "quadrant": 3,
@@ -493,10 +514,10 @@
     },
     {
       "quadrant": 2,
-      "ring": 2,
+      "ring": 5,
       "label": "Vercel Storage",
       "active": true,
-      "moved": 0
+      "moved": -1
     },
     {
       "quadrant": 1,
