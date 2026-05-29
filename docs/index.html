@@ -37,12 +37,13 @@
   <!-- hero title and description -->
   <section class="hero-section">
     <h1 class="hero-title">Tech Radar</h1>
-    <p class="hero-subtitle">Visualizing our technology choices to inspire and support engineering teams at <strong>LambdaWorks</strong> to pick the best technologies for new projects.</p>
+    <p class="hero-subtitle">Visualizing our technology choices to inspire and support engineering teams at <strong>LambdaWorks</strong>
+      to pick the best technologies for new projects.</p>
   </section>
 
   <!-- radar visualization card container -->
   <main class="radar-card">
-    <svg id="radar"></svg>
+    <svg id="radar" aria-label="Technology Radar Chart"><title>Technology Radar Chart</title></svg>
   </main>
 
   <!-- information cards grid -->
@@ -50,34 +51,39 @@
     <div class="info-card">
       <h2>What is the Tech Radar?</h2>
       <p>
-        The <strong>LambdaWorks Tech Radar</strong> is a curated list of technologies, complemented by an assessment result called a <em>ring assignment</em>.
+        The <strong>LambdaWorks Tech Radar</strong> is a curated list of technologies, complemented by an assessment
+        result called a <em>ring assignment</em>.
       </p>
       <p>
-        We evaluate and categorize technologies to ensure high product quality, stable operations, and unified technology stacks.
+        We evaluate and categorize technologies to ensure high product quality, stable operations, and unified
+        technology stacks.
       </p>
     </div>
 
     <div class="info-card">
       <h2>What is the purpose?</h2>
       <p>
-        The Tech Radar inspires and supports engineering teams at <strong>LambdaWorks</strong> to choose the best technologies for new projects.
+        The Tech Radar inspires and supports engineering teams at <strong>LambdaWorks</strong> to choose the best
+        technologies for new projects.
       </p>
       <p>
-        It provides a platform to share knowledge and experience, reflect on past technology decisions, and continuously evolve our agency's technology landscape.
+        It provides a platform to share knowledge and experience, reflect on past technology decisions, and continuously
+        evolve our agency's technology landscape.
       </p>
     </div>
 
     <div class="info-card full-width">
       <h2>Ring Assignments & Semantics</h2>
       <p>We classify technologies into six distinct rings, each defining a specific level of adoption and risk:</p>
-      
+
       <div class="rings-grid">
         <div class="ring-card">
           <div class="ring-card-header">
             <div class="ring-color-dot" style="background-color: var(--ring-adopt);"></div>
             <span class="ring-badge" style="background-color: var(--ring-adopt);">Adopt</span>
           </div>
-          <p class="ring-card-desc">Technologies we have high confidence in to serve our purpose, also at a large scale. Low-risk and recommended to be widely used.</p>
+          <p class="ring-card-desc">Technologies we have high confidence in to serve our purpose, also at a large scale.
+            Low-risk and recommended to be widely used.</p>
         </div>
 
         <div class="ring-card">
@@ -85,7 +91,8 @@
             <div class="ring-color-dot" style="background-color: var(--ring-trial);"></div>
             <span class="ring-badge" style="background-color: var(--ring-trial);">Trial</span>
           </div>
-          <p class="ring-card-desc">Technologies that we believe should be adopted in the future. We have started incorporating them, but need more serious usage experience before moving to Adopt.</p>
+          <p class="ring-card-desc">Technologies that we believe should be adopted in the future. We have started
+            incorporating them, but need more serious usage experience before moving to Adopt.</p>
         </div>
 
         <div class="ring-card">
@@ -93,7 +100,8 @@
             <div class="ring-color-dot" style="background-color: var(--ring-assess);"></div>
             <span class="ring-badge" style="background-color: var(--ring-assess);">Assess</span>
           </div>
-          <p class="ring-card-desc">Technologies that could be of value to us in the future, currently in a research and experimentation phase to assess if confidence is high enough to apply them on projects.</p>
+          <p class="ring-card-desc">Technologies that could be of value to us in the future, currently in a research and
+            experimentation phase to assess if confidence is high enough to apply them on projects.</p>
         </div>
 
         <div class="ring-card">
@@ -101,7 +109,8 @@
             <div class="ring-color-dot" style="background-color: var(--ring-hold);"></div>
             <span class="ring-badge" style="background-color: var(--ring-hold);">Hold</span>
           </div>
-          <p class="ring-card-desc">Technologies adopted in the past for existing projects. We plan to keep using them on those projects, but prefer not applying them to new projects.</p>
+          <p class="ring-card-desc">Technologies adopted in the past for existing projects. We plan to keep using them
+            on those projects, but prefer not applying them to new projects.</p>
         </div>
 
         <div class="ring-card">
@@ -109,7 +118,8 @@
             <div class="ring-color-dot" style="background-color: var(--ring-phase-out);"></div>
             <span class="ring-badge" style="background-color: var(--ring-phase-out);">Phase Out</span>
           </div>
-          <p class="ring-card-desc">Technologies adopted in the past for existing projects, but we have decided to gradually reduce dependency and migrate away from them.</p>
+          <p class="ring-card-desc">Technologies adopted in the past for existing projects, but we have decided to
+            gradually reduce dependency and migrate away from them.</p>
         </div>
 
         <div class="ring-card">
@@ -117,7 +127,8 @@
             <div class="ring-color-dot" style="background-color: var(--ring-opt-out);"></div>
             <span class="ring-badge" style="background-color: var(--ring-opt-out);">Opt Out</span>
           </div>
-          <p class="ring-card-desc">Technologies we have concluded not to adopt based on assessments, or ones that we have adopted in the past and have successfully phased out entirely.</p>
+          <p class="ring-card-desc">Technologies we have concluded not to adopt based on assessments, or ones that we
+            have adopted in the past and have successfully phased out entirely.</p>
         </div>
       </div>
     </div>
@@ -125,7 +136,10 @@
     <div class="info-card full-width">
       <h2>How do we maintain it?</h2>
       <p>
-        Assignment of technologies to rings is the outcome of ring change proposals, which are discussed and voted on. The Tech Radar is open for contributions from all engineering teams at <strong>LambdaWorks</strong>. It depends on their active participation to share lessons learned, pitfalls, and contribute to good practices for using these technologies.
+        Assignment of technologies to rings is the outcome of ring change proposals, which are discussed and voted on.
+        The Tech Radar is open for contributions from all engineering teams at <strong>LambdaWorks</strong>. It depends
+        on their active participation to share lessons learned, pitfalls, and contribute to good practices for using
+        these technologies.
       </p>
     </div>
   </section>
@@ -134,10 +148,13 @@
 <footer class="site-footer" role="contentinfo">
   <div class="container">
     <div>
-      &copy; <span id="current-year">2026</span> <a href="https://lambdaworks.io" target="_blank"><strong>LambdaWorks</strong></a>. All rights reserved.
+      &copy; <span id="current-year">2026</span> <a href="https://lambdaworks.io"
+                                                    target="_blank"><strong>LambdaWorks</strong></a>. All rights
+      reserved.
     </div>
     <div>
-      Created based on the open source <a href="https://github.com/zalando/tech-radar" target="_blank" rel="noopener">Zalando Tech Radar</a>.
+      Created based on the open source <a href="https://github.com/zalando/tech-radar" target="_blank" rel="noopener">Zalando
+      Tech Radar</a>.
     </div>
   </div>
 </footer>
@@ -145,9 +162,7 @@
 <script>
     document.getElementById('current-year').textContent = new Date().getFullYear();
 
-    fetch('./config.json').then(function (response) {
-        return response.json();
-    }).then(function (data) {
+    fetch('./config.json').then((response) => response.json()).then((data) => {
         radar_visualization({
             repo_url: "https://github.com/lambdaworks/tech-radar",
             title: "LambdaWorks Tech Radar",
@@ -175,7 +190,7 @@
             font_family: "Moderat Extended Regular",
             entries: data.entries
         });
-    }).catch(function (err) {
+    }).catch((err) => {
         console.log('Error loading config.json', err);
     });
 </script>

@@ -1,6 +1,6 @@
 {
   "name": "lambdaworks-tech-radar",
-  "version": "2024.2.0",
+  "version": "2025.8.0",
   "description": "Visualizing our technology choices",
   "homepage": "https://github.com/lambdaworks/tech-radar#readme",
   "repository": "https://github.com/lambdaworks/tech-radar.git",
@@ -10,15 +10,13 @@
     "doc": "docs"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.4.15",
     "browser-sync": "^3.0.4",
-    "eslint": "^9.32.0",
-    "eslint-plugin-html": "^8.1.3",
     "socket.io": "^4.8.1"
   },
   "scripts": {
     "start": "browser-sync docs -w",
-    "lint": "npm run lint:js && npm run lint:html",
-    "lint:js": "eslint docs/*.js",
-    "lint:html": "eslint docs/*.html"
+    "lint": "biome check docs/",
+    "format": "biome format --write docs/"
   }
 }
