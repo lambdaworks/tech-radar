@@ -24,7 +24,7 @@
 function radar_visualization(config) {
 	config.svg_id = config.svg || "radar";
 	config.width = config.width || 1450;
-	config.height = config.height || 1250;
+	config.height = config.height || 1080;
 	config.colors =
 		"colors" in config
 			? config.colors
@@ -43,14 +43,14 @@ function radar_visualization(config) {
 			? config.print_ring_descriptions_table
 			: false;
 	config.legend_offset = config.legend_offset || [
-		{ x: 450, y: 50 },
-		{ x: -675, y: 50 },
-		{ x: -675, y: -420 },
-		{ x: 450, y: -420 },
+		{ x: 425, y: 40 },
+		{ x: -690, y: 40 },
+		{ x: -690, y: -340 },
+		{ x: 425, y: -340 },
 	];
-	config.title_offset = config.title_offset || { x: -675, y: -520 };
-	config.footer_offset = config.footer_offset || { x: -155, y: 570 };
-	config.legend_column_width = config.legend_column_width || 140;
+	config.title_offset = config.title_offset || { x: -690, y: -485 };
+	config.footer_offset = config.footer_offset || { x: -155, y: 520 };
+	config.legend_column_width = config.legend_column_width || 120;
 	config.legend_line_height = config.legend_line_height || 10;
 
 	// custom random number generator, to make random sequence reproducible
@@ -305,7 +305,7 @@ function radar_visualization(config) {
 		index = null,
 		previousHeight = null,
 	) {
-		const dx = ring < 3 ? 0 : 140;
+		const dx = ring < 3 ? 0 : config.legend_column_width + 25;
 		let dy = index == null ? -16 : index * 12;
 
 		if (ring % 3 === 1) {
@@ -433,10 +433,10 @@ function radar_visualization(config) {
 			const col_y = [0, 0];
 			for (let ring = 0; ring < rings.length; ring++) {
 				const col = ring < 3 ? 0 : 1;
-				const dx = col === 0 ? 0 : 140;
+				const dx = col === 0 ? 0 : config.legend_column_width + 25;
 
 				if (ring !== 0 && ring !== 3) {
-					col_y[col] += 30;
+					col_y[col] += 26;
 				}
 
 				// Draw color indicator pill
@@ -463,7 +463,7 @@ function radar_visualization(config) {
 					.style("font-weight", "bold")
 					.style("fill", "#1a1a1a");
 
-				col_y[col] += 20;
+				col_y[col] += 22;
 
 				const items = legend
 					.selectAll(".legend" + quadrant + ring)
