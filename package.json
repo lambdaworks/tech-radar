@@ -10,9 +10,9 @@
     "doc": "docs"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.4.15",
+    "@biomejs/biome": "^2.4.16",
     "browser-sync": "^3.0.4",
-    "socket.io": "^4.8.1"
+    "socket.io": "^4.8.3"
   },
   "scripts": {
     "start": "browser-sync docs -w",

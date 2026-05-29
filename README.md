@@ -28,16 +28,16 @@ the positioning of an existing one, please open a pull-request with a change to 
 
 ## Local Development
 
-Install dependencies with yarn (or npm):
+Install dependencies with pnpm:
 
 ```
-yarn 
+pnpm install
 ```
 
 Start a local dev server:
 
 ```
-yarn start
+pnpm start
 ```
 
 Your default browser should automatically open and show the url

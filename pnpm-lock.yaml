@@ -9,13 +9,13 @@ importers:
   .:
     devDependencies:
       '@biomejs/biome':
-        specifier: ^2.4.15
+        specifier: ^2.4.16
         version: 2.4.16
       browser-sync:
         specifier: ^3.0.4
         version: 3.0.4
       socket.io:
-        specifier: ^4.8.1
+        specifier: ^4.8.3
         version: 4.8.3
 
 packages:
