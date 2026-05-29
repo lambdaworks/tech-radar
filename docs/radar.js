@@ -355,16 +355,63 @@ function radar_visualization(config) {
 			.style("fill", "#999");
 
 		// footer
-		radar
-			.append("text")
+		const footer_legend = radar
+			.append("g")
 			.attr(
 				"transform",
-				translate(config.footer_offset.x, config.footer_offset.y),
-			)
-			.text("▲ moved up     ▼ moved down     ★ new     ⬤ no change")
-			.attr("xml:space", "preserve")
-			.style("font-family", config.font_family)
-			.style("font-size", "12px");
+				translate(config.footer_offset.x - 30, config.footer_offset.y),
+			);
+
+		const legend_items = [
+			{
+				label: "moved up",
+				shape: (g) => {
+					g.append("path").attr("d", "M -6,5 6,5 0,-5 z").style("fill", "#000");
+				},
+			},
+			{
+				label: "moved down",
+				shape: (g) => {
+					g.append("path")
+						.attr("d", "M -6,-5 6,-5 0,5 z")
+						.style("fill", "#000");
+				},
+			},
+			{
+				label: "new",
+				shape: (g) => {
+					g.append("path")
+						.attr("d", "M 0,-6 6,0 0,6 -6,0 z")
+						.style("fill", "#000");
+				},
+			},
+			{
+				label: "no change",
+				shape: (g) => {
+					g.append("circle").attr("r", 5).style("fill", "#000");
+				},
+			},
+		];
+
+		let current_x = 0;
+		for (const item of legend_items) {
+			const item_g = footer_legend
+				.append("g")
+				.attr("transform", translate(current_x, -3));
+
+			item.shape(item_g);
+
+			item_g
+				.append("text")
+				.attr("x", 10)
+				.attr("y", 3)
+				.text(item.label)
+				.style("font-family", config.font_family)
+				.style("font-size", "10px")
+				.style("fill", "#000");
+
+			current_x += 12 + 10 + item.label.length * 6 + 24;
+		}
 
 		// legend
 		const legend = radar.append("g");
@@ -428,7 +475,7 @@ function radar_visualization(config) {
 					)
 					.attr("class", "legend" + quadrant + ring)
 					.attr("id", (d, _) => "legendItem" + d.id)
-					.text((d) => d.id + ". " + d.label)
+					.text((d) => `${d.id}. ${d.label}`)
 					.style("font-family", config.font_family)
 					.style("font-size", "11px")
 					.on("mouseover", (event, d) => {
@@ -589,21 +636,21 @@ function radar_visualization(config) {
 		if (d.moved === 1) {
 			blip
 				.append("path")
-				.attr("d", "M -11,5 11,5 0,-13 z") // triangle pointing up
+				.attr("d", "M -10,9 10,9 0,-9 z") // triangle pointing up
 				.style("fill", d.color)
 				.attr("stroke", config.colors.blip_stroke)
 				.attr("stroke-width", 0.5);
 		} else if (d.moved === -1) {
 			blip
 				.append("path")
-				.attr("d", "M -11,-5 11,-5 0,13 z") // triangle pointing down
+				.attr("d", "M -10,-9 10,-9 0,9 z") // triangle pointing down
 				.style("fill", d.color)
 				.attr("stroke", config.colors.blip_stroke)
 				.attr("stroke-width", 0.5);
 		} else if (d.moved === 2) {
 			blip
 				.append("path")
-				.attr("d", d3.symbol().type(d3.symbolStar).size(200))
+				.attr("d", "M 0,-10 10,0 0,10 -10,0 z") // diamond
 				.style("fill", d.color)
 				.attr("stroke", config.colors.blip_stroke)
 				.attr("stroke-width", 0.5);
@@ -619,10 +666,11 @@ function radar_visualization(config) {
 		// blip text
 		if (d.active || config.print_layout) {
 			const blip_text = config.print_layout ? d.id : d.label.match(/[a-z]/i);
+			const text_y = d.moved === -1 ? -1 : d.moved === 1 ? 4 : 3;
 			blip
 				.append("text")
 				.text(blip_text)
-				.attr("y", 3)
+				.attr("y", text_y)
 				.attr("text-anchor", "middle")
 				.style("fill", "#fff")
 				.style("font-family", config.font_family)

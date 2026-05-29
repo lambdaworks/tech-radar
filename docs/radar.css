@@ -318,6 +318,59 @@ footer a:hover {
 	text-decoration: none;
 }
 
+/* --- SHAPES EXPLANATION GRID --- */
+.shapes-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+	gap: 24px;
+	margin-top: 32px;
+}
+
+.shape-card {
+	border: 1.5px solid var(--brand-black);
+	border-radius: 16px;
+	padding: 24px;
+	background-color: var(--brand-light-gray);
+	display: flex;
+	align-items: flex-start;
+	gap: 16px;
+}
+
+.shape-icon-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 8px;
+	flex-shrink: 0;
+}
+
+.shape-icon {
+	width: 24px;
+	height: 24px;
+}
+
+.shape-symbol {
+	font-size: 1.25rem;
+	font-weight: 900;
+	color: var(--brand-black);
+	line-height: 1;
+}
+
+.shape-details h3 {
+	font-size: 1.1rem;
+	font-weight: 800;
+	margin-top: 0;
+	margin-bottom: 8px;
+	line-height: 1.2;
+}
+
+.shape-details p {
+	font-size: 0.9rem;
+	margin: 0;
+	line-height: 1.4;
+	color: var(--brand-dark-gray);
+}
+
 /* --- RESPONSIVE MEDIA QUERIES --- */
 @media (max-width: 1024px) {
 	.info-card {
