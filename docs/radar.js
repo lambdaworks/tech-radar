@@ -221,6 +221,7 @@ function radar_visualization(config) {
     if ("zoomed_quadrant" in config) {
         svg.attr("viewBox", viewbox(config.zoomed_quadrant));
     } else {
+        svg.attr("viewBox", "0 0 " + scaled_width + " " + scaled_height);
         radar.attr("transform", translate(scaled_width / 2, scaled_height / 2).concat(`scale(${config.scale})`));
     }
 
