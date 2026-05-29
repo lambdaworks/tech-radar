@@ -43,7 +43,7 @@
 
   <!-- radar visualization card container -->
   <main class="radar-card">
-    <svg id="radar" aria-label="Technology Radar Chart"><title>Technology Radar Chart</title></svg>
+    <svg id="radar" role="img" aria-label="Technology Radar Chart"></svg>
   </main>
 
   <!-- information cards grid -->
@@ -133,56 +133,6 @@
       </div>
     </div>
 
-    <div class="info-card full-width">
-      <h2>Status & Movement Indicators</h2>
-      <p>The shape of each blip on the radar represents its status and recent movement:</p>
-      
-      <div class="shapes-grid">
-        <div class="shape-card">
-          <div class="shape-icon-container">
-            <svg class="shape-icon" width="24" height="24" viewBox="-12 -12 24 24" aria-hidden="true"><circle r="9" fill="var(--brand-black)" stroke="var(--brand-black)" stroke-width="0.5"></circle></svg>
-            <span class="shape-symbol">●</span>
-          </div>
-          <div class="shape-details">
-            <h3>Unchanged</h3>
-            <p>Stable technologies with no change in their ring assignment since the last evaluation.</p>
-          </div>
-        </div>
-
-        <div class="shape-card">
-          <div class="shape-icon-container">
-            <svg class="shape-icon" width="24" height="24" viewBox="-12 -12 24 24" aria-hidden="true"><path d="M -10,9 10,9 0,-9 z" fill="var(--brand-black)" stroke="var(--brand-black)" stroke-width="0.5"></path></svg>
-            <span class="shape-symbol">▲</span>
-          </div>
-          <div class="shape-details">
-            <h3>Moved Up</h3>
-            <p>Technologies that have moved to a more adopted ring (e.g., Trial to Adopt).</p>
-          </div>
-        </div>
-
-        <div class="shape-card">
-          <div class="shape-icon-container">
-            <svg class="shape-icon" width="24" height="24" viewBox="-12 -12 24 24" aria-hidden="true"><path d="M -10,-9 10,-9 0,9 z" fill="var(--brand-black)" stroke="var(--brand-black)" stroke-width="0.5"></path></svg>
-            <span class="shape-symbol">▼</span>
-          </div>
-          <div class="shape-details">
-            <h3>Moved Down</h3>
-            <p>Technologies that have shifted to a less active ring, indicating phase out or caution.</p>
-          </div>
-        </div>
-
-        <div class="shape-card">
-          <div class="shape-icon-container">
-            <svg class="shape-icon" width="24" height="24" viewBox="-12 -12 24 24" aria-hidden="true"><path d="M 0,-10 10,0 0,10 -10,0 z" fill="var(--brand-black)" stroke="var(--brand-black)" stroke-width="0.5"></path></svg>
-            <span class="shape-symbol">◆</span>
-          </div>
-          <div class="shape-details">
-            <h3>New Entry</h3>
-            <p>New technologies introduced to the Tech Radar in this iteration.</p>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <div class="info-card full-width">
       <h2>How do we maintain it?</h2>

@@ -4,7 +4,7 @@
 		{
 			"quadrant": 1,
 			"ring": 3,
-			"label": "AWS Beanstalk",
+			"label": "AWS Elastic Beanstalk",
 			"active": true,
 			"moved": 0
 		},
@@ -95,7 +95,7 @@
 		{
 			"quadrant": 2,
 			"ring": 3,
-			"label": "Cassandra",
+			"label": "Apache Cassandra",
 			"active": true,
 			"moved": 0
 		},
@@ -137,7 +137,7 @@
 		{
 			"quadrant": 2,
 			"ring": 1,
-			"label": "Druid",
+			"label": "Apache Druid",
 			"active": true,
 			"moved": 0
 		},
@@ -172,7 +172,7 @@
 		{
 			"quadrant": 3,
 			"ring": 1,
-			"label": "FP",
+			"label": "Functional Programming (FP)",
 			"active": true,
 			"moved": 0
 		},
@@ -193,7 +193,7 @@
 		{
 			"quadrant": 1,
 			"ring": 3,
-			"label": "GCP",
+			"label": "Google Cloud Platform (GCP)",
 			"active": true,
 			"moved": 0
 		},
@@ -228,7 +228,7 @@
 		{
 			"quadrant": 2,
 			"ring": 0,
-			"label": "Kafka",
+			"label": "Apache Kafka",
 			"active": true,
 			"moved": 0
 		},
@@ -242,7 +242,7 @@
 		{
 			"quadrant": 0,
 			"ring": 2,
-			"label": "Kotlin (w Arrow)",
+			"label": "Kotlin (with Arrow)",
 			"active": true,
 			"moved": 0
 		},
@@ -256,14 +256,14 @@
 		{
 			"quadrant": 0,
 			"ring": 0,
-			"label": "Langchain",
+			"label": "LangChain",
 			"active": true,
 			"moved": 0
 		},
 		{
 			"quadrant": 1,
 			"ring": 0,
-			"label": "Launch Darkly",
+			"label": "LaunchDarkly",
 			"active": true,
 			"moved": 0
 		},
@@ -319,7 +319,7 @@
 		{
 			"quadrant": 0,
 			"ring": 3,
-			"label": "Play",
+			"label": "Play Framework",
 			"active": true,
 			"moved": 0
 		},
@@ -333,7 +333,7 @@
 		{
 			"quadrant": 2,
 			"ring": 0,
-			"label": "Postgres",
+			"label": "PostgreSQL",
 			"active": true,
 			"moved": 0
 		},
@@ -375,14 +375,14 @@
 		{
 			"quadrant": 1,
 			"ring": 2,
-			"label": "Redshift",
+			"label": "Amazon Redshift",
 			"active": true,
 			"moved": 0
 		},
 		{
 			"quadrant": 3,
 			"ring": 0,
-			"label": "Relational DBs",
+			"label": "Relational Databases",
 			"active": true,
 			"moved": 0
 		},
@@ -403,7 +403,7 @@
 		{
 			"quadrant": 1,
 			"ring": 0,
-			"label": "SemaphoreCI",
+			"label": "Semaphore CI",
 			"active": true,
 			"moved": 0
 		},
@@ -529,7 +529,7 @@
 		{
 			"quadrant": 1,
 			"ring": 4,
-			"label": "dokku",
+			"label": "Dokku",
 			"active": true,
 			"moved": 0
 		},
@@ -543,7 +543,7 @@
 		{
 			"quadrant": 1,
 			"ring": 3,
-			"label": "netlify",
+			"label": "Netlify",
 			"active": true,
 			"moved": 0
 		},
@@ -571,14 +571,14 @@
 		{
 			"quadrant": 0,
 			"ring": 1,
-			"label": "Pekko",
+			"label": "Apache Pekko",
 			"active": true,
 			"moved": 1
 		},
 		{
 			"quadrant": 3,
 			"ring": 0,
-			"label": "IAC",
+			"label": "IaC",
 			"active": true,
 			"moved": 2
 		},

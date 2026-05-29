@@ -24,7 +24,7 @@
 function radar_visualization(config) {
 	config.svg_id = config.svg || "radar";
 	config.width = config.width || 1450;
-	config.height = config.height || 1000;
+	config.height = config.height || 1250;
 	config.colors =
 		"colors" in config
 			? config.colors
@@ -43,13 +43,13 @@ function radar_visualization(config) {
 			? config.print_ring_descriptions_table
 			: false;
 	config.legend_offset = config.legend_offset || [
-		{ x: 450, y: 90 },
-		{ x: -675, y: 90 },
-		{ x: -675, y: -310 },
-		{ x: 450, y: -310 },
+		{ x: 450, y: 50 },
+		{ x: -675, y: 50 },
+		{ x: -675, y: -420 },
+		{ x: 450, y: -420 },
 	];
-	config.title_offset = config.title_offset || { x: -675, y: -420 };
-	config.footer_offset = config.footer_offset || { x: -155, y: 450 };
+	config.title_offset = config.title_offset || { x: -675, y: -520 };
+	config.footer_offset = config.footer_offset || { x: -155, y: 570 };
 	config.legend_column_width = config.legend_column_width || 140;
 	config.legend_line_height = config.legend_line_height || 10;
 
@@ -429,29 +429,43 @@ function radar_visualization(config) {
 				.style("font-family", config.font_family)
 				.style("font-size", "18px")
 				.style("font-weight", "bold");
-			let previousLegendHeight = 0;
+
+			const col_y = [0, 0];
 			for (let ring = 0; ring < rings.length; ring++) {
-				if (ring > 2) {
-					previousLegendHeight = 0;
+				const col = ring < 3 ? 0 : 1;
+				const dx = col === 0 ? 0 : 140;
+
+				if (ring !== 0 && ring !== 3) {
+					col_y[col] += 30;
 				}
+
+				// Draw color indicator pill
+				legend
+					.append("rect")
+					.attr("x", config.legend_offset[quadrant].x + dx)
+					.attr("y", config.legend_offset[quadrant].y + col_y[col] - 10)
+					.attr("width", 4)
+					.attr("height", 12)
+					.style("fill", config.rings[ring].color);
+
 				legend
 					.append("text")
 					.attr(
 						"transform",
-						legend_transform(
-							quadrant,
-							ring,
-							config.legend_column_width,
-							null,
-							previousLegendHeight,
+						translate(
+							config.legend_offset[quadrant].x + dx + 10,
+							config.legend_offset[quadrant].y + col_y[col],
 						),
 					)
 					.text(config.rings[ring].name)
 					.style("font-family", config.font_family)
 					.style("font-size", "12px")
 					.style("font-weight", "bold")
-					.style("fill", config.rings[ring].color);
-				legend
+					.style("fill", "#1a1a1a");
+
+				col_y[col] += 20;
+
+				const items = legend
 					.selectAll(".legend" + quadrant + ring)
 					.data(segmented[quadrant][ring])
 					.enter()
@@ -464,19 +478,13 @@ function radar_visualization(config) {
 						d.link && config.links_in_new_tabs ? "_blank" : null,
 					)
 					.append("text")
-					.attr("transform", (d, i) =>
-						legend_transform(
-							quadrant,
-							ring,
-							config.legend_column_width,
-							i,
-							previousLegendHeight,
-						),
-					)
 					.attr("class", "legend" + quadrant + ring)
 					.attr("id", (d, _) => "legendItem" + d.id)
 					.text((d) => `${d.id}. ${d.label}`)
-					.style("font-family", config.font_family)
+					.style(
+						"font-family",
+						"ui-monospace, SFMono-Regular, SF Mono, Menlo, Monaco, Consolas, monospace",
+					)
 					.style("font-size", "11px")
 					.on("mouseover", (event, d) => {
 						showBubble(d);
@@ -485,18 +493,26 @@ function radar_visualization(config) {
 					.on("mouseout", (event, d) => {
 						hideBubble(d);
 						unhighlightLegendItem(d);
-					})
-					.call(wrap_text)
-					.each(function () {
-						previousLegendHeight += d3.select(this).node().getBBox().height;
 					});
+
+				items.call(wrap_text);
+
+				items.each(function (d, i) {
+					d3.select(this).attr(
+						"transform",
+						translate(
+							config.legend_offset[quadrant].x + dx,
+							config.legend_offset[quadrant].y + col_y[col],
+						),
+					);
+					const itemHeight = this.getBBox().height;
+					col_y[col] += itemHeight + 2;
+				});
 			}
 		}
 	}
 
 	function wrap_text(text) {
-		let heightForNextElement = 0;
-
 		text.each(function () {
 			const textElement = d3.select(this);
 			const words = textElement.text().split(" ");
@@ -515,7 +531,7 @@ function radar_visualization(config) {
 			let tspan = textElement
 				.append("tspan")
 				.attr("x", 0)
-				.attr("y", heightForNextElement)
+				.attr("y", 0)
 				.attr("dy", 0);
 
 			for (let position = 0; position < words.length; position++) {
@@ -539,9 +555,6 @@ function radar_visualization(config) {
 						.text(words[position]);
 				}
 			}
-
-			const textBoundingBox = textElement.node().getBBox();
-			heightForNextElement = textBoundingBox.y + textBoundingBox.height;
 		});
 	}
 
@@ -672,9 +685,10 @@ function radar_visualization(config) {
 				.text(blip_text)
 				.attr("y", text_y)
 				.attr("text-anchor", "middle")
-				.style("fill", "#fff")
+				.style("fill", "#1a1a1a")
 				.style("font-family", config.font_family)
 				.style("font-size", (_) => (blip_text.length > 2 ? "8px" : "9px"))
+				.style("font-weight", "bold")
 				.style("pointer-events", "none")
 				.style("user-select", "none");
 		}
