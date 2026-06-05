@@ -123,6 +123,37 @@ function radar_visualization(config) {
 		};
 	}
 
+	function legend_reserved_box(quadrant) {
+		if (!config.print_layout) {
+			return null;
+		}
+
+		const offset = config.legend_offset[quadrant];
+		const text_width = config.legend_column_width * 2 + 105;
+		const text_height = 265;
+
+		return {
+			min: {
+				x: offset.x - 20,
+				y: offset.y - 65,
+			},
+			max: {
+				x: offset.x + text_width,
+				y: offset.y + text_height,
+			},
+		};
+	}
+
+	function is_inside_box(point, box) {
+		return (
+			box &&
+			point.x >= box.min.x &&
+			point.x <= box.max.x &&
+			point.y >= box.min.y &&
+			point.y <= box.max.y
+		);
+	}
+
 	function segment(quadrant, ring) {
 		const polar_min = {
 			t: quadrants[quadrant].radial_min * Math.PI,
@@ -153,11 +184,23 @@ function radar_visualization(config) {
 				d.y = cartesian(p).y; // adjust data too!
 				return d.y;
 			},
-			random: () =>
-				cartesian({
-					t: random_between(polar_min.t, polar_max.t),
-					r: normal_between(polar_min.r, polar_max.r),
-				}),
+			random: () => {
+				const reserved = legend_reserved_box(quadrant);
+				let point = null;
+
+				for (let attempt = 0; attempt < 25; attempt++) {
+					point = cartesian({
+						t: random_between(polar_min.t, polar_max.t),
+						r: normal_between(polar_min.r, polar_max.r),
+					});
+
+					if (!is_inside_box(point, reserved)) {
+						return point;
+					}
+				}
+
+				return point;
+			},
 		};
 	}
 
