@@ -58,11 +58,25 @@
 			"moved": 0
 		},
 		{
+			"quadrant": 2,
+			"ring": 0,
+			"label": "AWS Kinesis",
+			"active": true,
+			"moved": 1
+		},
+		{
 			"quadrant": 1,
 			"ring": 0,
 			"label": "AWS Lambda",
 			"active": true,
 			"moved": 0
+		},
+		{
+			"quadrant": 2,
+			"ring": 0,
+			"label": "AWS OpenSearch",
+			"active": true,
+			"moved": 2
 		},
 		{
 			"quadrant": 2,
@@ -136,17 +150,17 @@
 		},
 		{
 			"quadrant": 2,
-			"ring": 1,
+			"ring": 0,
 			"label": "Apache Druid",
 			"active": true,
-			"moved": 0
+			"moved": 1
 		},
 		{
 			"quadrant": 2,
-			"ring": 1,
+			"ring": 3,
 			"label": "DynamoDB",
 			"active": true,
-			"moved": 0
+			"moved": -1
 		},
 		{
 			"quadrant": 3,
@@ -233,13 +247,6 @@
 			"moved": 0
 		},
 		{
-			"quadrant": 2,
-			"ring": 1,
-			"label": "Kinesis",
-			"active": true,
-			"moved": 0
-		},
-		{
 			"quadrant": 0,
 			"ring": 2,
 			"label": "Kotlin (with Arrow)",
@@ -276,10 +283,17 @@
 		},
 		{
 			"quadrant": 2,
-			"ring": 1,
+			"ring": 5,
 			"label": "Milvus",
 			"active": true,
-			"moved": 0
+			"moved": -1
+		},
+		{
+			"quadrant": 2,
+			"ring": 3,
+			"label": "MySQL",
+			"active": true,
+			"moved": 2
 		},
 		{
 			"quadrant": 0,
@@ -346,10 +360,10 @@
 		},
 		{
 			"quadrant": 2,
-			"ring": 4,
+			"ring": 3,
 			"label": "RabbitMQ",
 			"active": true,
-			"moved": 0
+			"moved": 1
 		},
 		{
 			"quadrant": 0,
@@ -374,10 +388,10 @@
 		},
 		{
 			"quadrant": 1,
-			"ring": 2,
+			"ring": 3,
 			"label": "Amazon Redshift",
 			"active": true,
-			"moved": 0
+			"moved": 1
 		},
 		{
 			"quadrant": 3,
@@ -485,6 +499,13 @@
 			"moved": 0
 		},
 		{
+			"quadrant": 2,
+			"ring": 0,
+			"label": "Valkey",
+			"active": true,
+			"moved": 2
+		},
+		{
 			"quadrant": 1,
 			"ring": 2,
 			"label": "Vercel",
@@ -493,10 +514,10 @@
 		},
 		{
 			"quadrant": 2,
-			"ring": 2,
+			"ring": 5,
 			"label": "Vercel Storage",
 			"active": true,
-			"moved": 0
+			"moved": -1
 		},
 		{
 			"quadrant": 1,
