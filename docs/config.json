@@ -219,6 +219,13 @@
 			"moved": 0
 		},
 		{
+			"quadrant": 3,
+			"ring": 1,
+			"label": "gRPC",
+			"active": true,
+			"moved": 2
+		},
+		{
 			"quadrant": 1,
 			"ring": 0,
 			"label": "Google Domains",
@@ -280,6 +287,13 @@
 			"label": "Metabase",
 			"active": true,
 			"moved": 0
+		},
+		{
+			"quadrant": 3,
+			"ring": 1,
+			"label": "Monorepo",
+			"active": true,
+			"moved": 2
 		},
 		{
 			"quadrant": 2,
