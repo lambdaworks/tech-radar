@@ -167,7 +167,7 @@
 			"ring": 3,
 			"label": "Edge Functions",
 			"active": true,
-			"moved": -1
+			"moved": 0
 		},
 		{
 			"quadrant": 2,
@@ -217,6 +217,13 @@
 			"label": "GitHub Actions",
 			"active": true,
 			"moved": 0
+		},
+		{
+			"quadrant": 3,
+			"ring": 1,
+			"label": "gRPC",
+			"active": true,
+			"moved": 2
 		},
 		{
 			"quadrant": 1,
@@ -280,6 +287,13 @@
 			"label": "Metabase",
 			"active": true,
 			"moved": 0
+		},
+		{
+			"quadrant": 3,
+			"ring": 1,
+			"label": "Monorepo",
+			"active": true,
+			"moved": 2
 		},
 		{
 			"quadrant": 2,
@@ -601,14 +615,14 @@
 			"ring": 0,
 			"label": "IaC",
 			"active": true,
-			"moved": 2
+			"moved": 0
 		},
 		{
 			"quadrant": 3,
 			"ring": 0,
 			"label": "CI/CD",
 			"active": true,
-			"moved": 2
+			"moved": 0
 		}
 	]
 }
