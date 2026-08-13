@@ -94,10 +94,10 @@
 		},
 		{
 			"quadrant": 0,
-			"ring": 3,
+			"ring": 4,
 			"label": "Akka",
 			"active": true,
-			"moved": 0
+			"moved": -1
 		},
 		{
 			"quadrant": 3,
@@ -115,17 +115,17 @@
 		},
 		{
 			"quadrant": 0,
-			"ring": 3,
+			"ring": 4,
 			"label": "Cats",
 			"active": true,
-			"moved": 0
+			"moved": -1
 		},
 		{
 			"quadrant": 0,
-			"ring": 0,
+			"ring": 4,
 			"label": "Cucumber",
 			"active": true,
-			"moved": 0
+			"moved": -1
 		},
 		{
 			"quadrant": 3,
@@ -199,10 +199,10 @@
 		},
 		{
 			"quadrant": 0,
-			"ring": 3,
+			"ring": 2,
 			"label": "Flutter",
 			"active": true,
-			"moved": 0
+			"moved": 1
 		},
 		{
 			"quadrant": 1,
@@ -269,10 +269,10 @@
 		},
 		{
 			"quadrant": 0,
-			"ring": 0,
+			"ring": 3,
 			"label": "LangChain",
 			"active": true,
-			"moved": 0
+			"moved": -1
 		},
 		{
 			"quadrant": 1,
@@ -339,13 +339,6 @@
 		},
 		{
 			"quadrant": 0,
-			"ring": 1,
-			"label": "PactumJS",
-			"active": true,
-			"moved": 0
-		},
-		{
-			"quadrant": 0,
 			"ring": 3,
 			"label": "Play Framework",
 			"active": true,
@@ -353,10 +346,10 @@
 		},
 		{
 			"quadrant": 0,
-			"ring": 1,
+			"ring": 0,
 			"label": "Playwright",
 			"active": true,
-			"moved": 0
+			"moved": 1
 		},
 		{
 			"quadrant": 2,
@@ -500,10 +493,10 @@
 		},
 		{
 			"quadrant": 0,
-			"ring": 3,
+			"ring": 4,
 			"label": "Twirl",
 			"active": true,
-			"moved": 0
+			"moved": -1
 		},
 		{
 			"quadrant": 0,
@@ -556,10 +549,10 @@
 		},
 		{
 			"quadrant": 0,
-			"ring": 3,
+			"ring": 2,
 			"label": "dbt",
 			"active": true,
-			"moved": 0
+			"moved": 1
 		},
 		{
 			"quadrant": 1,
@@ -570,10 +563,10 @@
 		},
 		{
 			"quadrant": 0,
-			"ring": 3,
+			"ring": 4,
 			"label": "fp-ts",
 			"active": true,
-			"moved": 0
+			"moved": -1
 		},
 		{
 			"quadrant": 1,
@@ -594,7 +587,7 @@
 			"ring": 2,
 			"label": "Rust",
 			"active": true,
-			"moved": 1
+			"moved": 0
 		},
 		{
 			"quadrant": 1,
@@ -605,10 +598,10 @@
 		},
 		{
 			"quadrant": 0,
-			"ring": 1,
+			"ring": 3,
 			"label": "Apache Pekko",
 			"active": true,
-			"moved": 1
+			"moved": -1
 		},
 		{
 			"quadrant": 3,
@@ -623,6 +616,62 @@
 			"label": "CI/CD",
 			"active": true,
 			"moved": 0
+		},
+		{
+			"quadrant": 0,
+			"ring": 2,
+			"label": "Mobilewright",
+			"active": true,
+			"moved": 2
+		},
+		{
+			"quadrant": 0,
+			"ring": 2,
+			"label": "Kotlin Multiplatform",
+			"active": true,
+			"moved": 2
+		},
+		{
+			"quadrant": 0,
+			"ring": 1,
+			"label": "impeccable.style",
+			"active": true,
+			"moved": 2
+		},
+		{
+			"quadrant": 0,
+			"ring": 0,
+			"label": "shadcn/ui",
+			"active": true,
+			"moved": 2
+		},
+		{
+			"quadrant": 0,
+			"ring": 1,
+			"label": "ElysiaJS",
+			"active": true,
+			"moved": 2
+		},
+		{
+			"quadrant": 0,
+			"ring": 1,
+			"label": "Bun",
+			"active": true,
+			"moved": 2
+		},
+		{
+			"quadrant": 0,
+			"ring": 2,
+			"label": "Java",
+			"active": true,
+			"moved": 2
+		},
+		{
+			"quadrant": 0,
+			"ring": 2,
+			"label": "Spring Boot",
+			"active": true,
+			"moved": 2
 		}
 	]
 }
