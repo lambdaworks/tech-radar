@@ -1,5 +1,5 @@
 {
-	"date": "2025.08",
+	"date": "2026.09",
 	"entries": [
 		{
 			"quadrant": 1,
@@ -12,13 +12,6 @@
 			"quadrant": 1,
 			"ring": 0,
 			"label": "AWS Cognito",
-			"active": true,
-			"moved": 0
-		},
-		{
-			"quadrant": 1,
-			"ring": 3,
-			"label": "AWS Cognito Hosted UI",
 			"active": true,
 			"moved": 0
 		},
@@ -45,13 +38,6 @@
 		},
 		{
 			"quadrant": 1,
-			"ring": 1,
-			"label": "AWS Glue",
-			"active": true,
-			"moved": 0
-		},
-		{
-			"quadrant": 1,
 			"ring": 3,
 			"label": "AWS Keyspaces",
 			"active": true,
@@ -66,10 +52,10 @@
 		},
 		{
 			"quadrant": 1,
-			"ring": 0,
+			"ring": 3,
 			"label": "AWS Lambda",
 			"active": true,
-			"moved": 0
+			"moved": -1
 		},
 		{
 			"quadrant": 2,
@@ -82,13 +68,6 @@
 			"quadrant": 2,
 			"ring": 0,
 			"label": "AWS S3",
-			"active": true,
-			"moved": 0
-		},
-		{
-			"quadrant": 1,
-			"ring": 3,
-			"label": "AdminJS",
 			"active": true,
 			"moved": 0
 		},
@@ -119,6 +98,13 @@
 			"label": "Cats",
 			"active": true,
 			"moved": -1
+		},
+		{
+			"quadrant": 1,
+			"ring": 0,
+			"label": "Coolify",
+			"active": true,
+			"moved": 2
 		},
 		{
 			"quadrant": 0,
@@ -213,10 +199,10 @@
 		},
 		{
 			"quadrant": 1,
-			"ring": 1,
+			"ring": 0,
 			"label": "GitHub Actions",
 			"active": true,
-			"moved": 0
+			"moved": 1
 		},
 		{
 			"quadrant": 3,
@@ -224,13 +210,6 @@
 			"label": "gRPC",
 			"active": true,
 			"moved": 2
-		},
-		{
-			"quadrant": 1,
-			"ring": 0,
-			"label": "Google Domains",
-			"active": true,
-			"moved": 0
 		},
 		{
 			"quadrant": 3,
@@ -241,10 +220,10 @@
 		},
 		{
 			"quadrant": 1,
-			"ring": 3,
+			"ring": 1,
 			"label": "Hetzner",
 			"active": true,
-			"moved": 0
+			"moved": 1
 		},
 		{
 			"quadrant": 2,
@@ -395,10 +374,10 @@
 		},
 		{
 			"quadrant": 1,
-			"ring": 3,
+			"ring": 4,
 			"label": "Amazon Redshift",
 			"active": true,
-			"moved": 1
+			"moved": -1
 		},
 		{
 			"quadrant": 3,
@@ -423,10 +402,10 @@
 		},
 		{
 			"quadrant": 1,
-			"ring": 0,
+			"ring": 3,
 			"label": "Semaphore CI",
 			"active": true,
-			"moved": 0
+			"moved": -1
 		},
 		{
 			"quadrant": 1,
@@ -472,17 +451,17 @@
 		},
 		{
 			"quadrant": 1,
-			"ring": 0,
+			"ring": 3,
 			"label": "Terraform",
 			"active": true,
-			"moved": 0
+			"moved": -1
 		},
 		{
 			"quadrant": 1,
-			"ring": 2,
+			"ring": 0,
 			"label": "AWS CDK",
 			"active": true,
-			"moved": 0
+			"moved": 1
 		},
 		{
 			"quadrant": 1,
@@ -528,10 +507,10 @@
 		},
 		{
 			"quadrant": 1,
-			"ring": 1,
+			"ring": 3,
 			"label": "Vonage",
 			"active": true,
-			"moved": 0
+			"moved": -1
 		},
 		{
 			"quadrant": 1,
@@ -555,13 +534,6 @@
 			"moved": 1
 		},
 		{
-			"quadrant": 1,
-			"ring": 4,
-			"label": "Dokku",
-			"active": true,
-			"moved": 0
-		},
-		{
 			"quadrant": 0,
 			"ring": 4,
 			"label": "fp-ts",
@@ -576,25 +548,11 @@
 			"moved": 0
 		},
 		{
-			"quadrant": 1,
-			"ring": 2,
-			"label": "Jitsu",
-			"active": true,
-			"moved": 1
-		},
-		{
 			"quadrant": 0,
 			"ring": 2,
 			"label": "Rust",
 			"active": true,
 			"moved": 0
-		},
-		{
-			"quadrant": 1,
-			"ring": 2,
-			"label": "Middleware",
-			"active": true,
-			"moved": 1
 		},
 		{
 			"quadrant": 0,
