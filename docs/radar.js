@@ -307,12 +307,12 @@ function radar_visualization(config) {
 	const defs = grid.append("defs");
 	const filter = defs
 		.append("filter")
-		.attr("x", 0)
-		.attr("y", 0)
-		.attr("width", 1)
-		.attr("height", 1)
+		.attr("x", -0.04)
+		.attr("y", -0.08)
+		.attr("width", 1.08)
+		.attr("height", 1.16)
 		.attr("id", "solid");
-	filter.append("feFlood").attr("flood-color", "rgb(0, 0, 0, 0.8)");
+	filter.append("feFlood").attr("flood-color", "rgba(26, 26, 26, 0.9)");
 	filter.append("feComposite").attr("in", "SourceGraphic");
 
 	// draw rings
@@ -512,14 +512,26 @@ function radar_visualization(config) {
 					.selectAll(".legend" + quadrant + ring)
 					.data(segmented[quadrant][ring])
 					.enter()
-					.append("a")
-					.attr("href", (d, _) => {
-						return d.link ? d.link : "#"; // stay on the same page if no link was provided
-					})
-					// Add a target if (and only if) there is a link, and we want new tabs
-					.attr("target", (d, _) =>
-						d.link && config.links_in_new_tabs ? "_blank" : null,
+					.append("g")
+					.attr("class", "legend-entry")
+					.attr("role", "button")
+					.attr("tabindex", 0)
+					.attr(
+						"aria-label",
+						(d) =>
+							`${d.label}, ${config.rings[d.ring].name} ring, ${config.quadrants[d.quadrant].name}`,
 					)
+					.on("click", (event, d) => {
+						event.preventDefault();
+						event.stopPropagation();
+						selectBlip(d, event.detail === 0);
+					})
+					.on("keydown", (event, d) => {
+						if (event.key === "Enter" || event.key === " ") {
+							event.preventDefault();
+							selectBlip(d, true);
+						}
+					})
 					.append("text")
 					.attr("class", "legend" + quadrant + ring)
 					.attr("id", (d, _) => "legendItem" + d.id)
@@ -529,6 +541,8 @@ function radar_visualization(config) {
 						"ui-monospace, SFMono-Regular, SF Mono, Menlo, Monaco, Consolas, monospace",
 					)
 					.style("font-size", "11px")
+					.style("fill", "#1a1a1a")
+					.style("cursor", "pointer")
 					.on("mouseover", (event, d) => {
 						showBubble(d);
 						highlightLegendItem(d);
@@ -645,16 +659,86 @@ function radar_visualization(config) {
 	}
 
 	function highlightLegendItem(d) {
+		if (!d) return;
 		const legendItem = document.getElementById("legendItem" + d.id);
-		legendItem.setAttribute("filter", "url(#solid)");
-		legendItem.setAttribute("fill", "white");
+		if (legendItem) {
+			legendItem.setAttribute("filter", "url(#solid)");
+			legendItem.setAttribute("fill", "#ffffff");
+			legendItem.style.fill = "#ffffff";
+			legendItem.classList.add("is-highlighted");
+			const tspans = legendItem.querySelectorAll("tspan");
+			for (let i = 0; i < tspans.length; i++) {
+				tspans[i].setAttribute("fill", "#ffffff");
+				tspans[i].style.fill = "#ffffff";
+			}
+		}
 	}
 
 	function unhighlightLegendItem(d) {
+		if (!d) return;
 		const legendItem = document.getElementById("legendItem" + d.id);
+		if (!legendItem) return;
+		if (selectedEntry && selectedEntry.id === d.id) return;
 		legendItem.removeAttribute("filter");
-		legendItem.removeAttribute("fill");
+		legendItem.setAttribute("fill", "#1a1a1a");
+		legendItem.style.fill = "";
+		legendItem.classList.remove("is-highlighted");
+		const tspans = legendItem.querySelectorAll("tspan");
+		for (let i = 0; i < tspans.length; i++) {
+			tspans[i].removeAttribute("fill");
+			tspans[i].style.fill = "";
+		}
 	}
+
+	let selectedEntry = null;
+
+	const activeBlipRing = rink
+		.append("circle")
+		.attr("class", "active-blip-ring")
+		.attr("r", 15)
+		.attr("fill", "none")
+		.attr("stroke", "#000000")
+		.attr("stroke-width", 2.5)
+		.style("display", "none")
+		.style("pointer-events", "none");
+
+	function selectBlip(d, isKeyboard = false) {
+		if (selectedEntry && (!d || selectedEntry.id !== d.id)) {
+			const prev = selectedEntry;
+			selectedEntry = null;
+			unhighlightLegendItem(prev);
+		}
+		selectedEntry = d;
+		rink
+			.selectAll(".blip")
+			.attr("aria-pressed", (entry) => String(entry === d));
+		radar
+			.selectAll(".legend-entry")
+			.attr("aria-pressed", (entry) => String(entry === d));
+		if (!d) {
+			activeBlipRing.style("display", "none");
+			if (typeof config.onSelect === "function") {
+				config.onSelect(null, isKeyboard);
+			}
+			return;
+		}
+		activeBlipRing
+			.style("display", "block")
+			.attr("cx", d.segment.clipx(d))
+			.attr("cy", d.segment.clipy(d));
+
+		highlightLegendItem(d);
+
+		if (typeof config.onSelect === "function") {
+			config.onSelect(d, isKeyboard);
+		}
+	}
+
+	svg.on("click", (event) => {
+		if (!event.target.closest(".blip, .legend-entry, a")) {
+			selectBlip(null);
+		}
+	});
 
 	// draw blips on radar
 	const blips = rink
@@ -663,6 +747,15 @@ function radar_visualization(config) {
 		.enter()
 		.append("g")
 		.attr("class", "blip")
+		.attr("role", "button")
+		.attr("tabindex", "0")
+		.attr("aria-pressed", "false")
+		.attr(
+			"aria-label",
+			(d) =>
+				`${d.label}, ${config.rings[d.ring].name} ring, ${config.quadrants[d.quadrant].name}`,
+		)
+		.style("cursor", "pointer")
 		.attr("transform", (d, i) =>
 			legend_transform(d.quadrant, d.ring, config.legend_column_width, i),
 		)
@@ -673,20 +766,30 @@ function radar_visualization(config) {
 		.on("mouseout", (event, d) => {
 			hideBubble(d);
 			unhighlightLegendItem(d);
+		})
+		.on("focus", (event, d) => {
+			showBubble(d);
+			highlightLegendItem(d);
+		})
+		.on("blur", (event, d) => {
+			hideBubble(d);
+			unhighlightLegendItem(d);
+		})
+		.on("click", (event, d) => {
+			event.preventDefault();
+			event.stopPropagation();
+			selectBlip(d, false);
+		})
+		.on("keydown", (event, d) => {
+			if (event.key === "Enter" || event.key === " ") {
+				event.preventDefault();
+				selectBlip(d, true);
+			}
 		});
 
 	// configure each blip
 	blips.each(function (d) {
-		let blip = d3.select(this);
-
-		// blip link
-		if (d.active && Object.hasOwn(d, "link") && d.link) {
-			blip = blip.append("a").attr("xlink:href", d.link);
-
-			if (config.links_in_new_tabs) {
-				blip.attr("target", "_blank");
-			}
-		}
+		const blip = d3.select(this);
 
 		// blip shape
 		if (d.moved === 1) {
@@ -742,6 +845,11 @@ function radar_visualization(config) {
 		blips.attr("transform", (d) =>
 			translate(d.segment.clipx(d), d.segment.clipy(d)),
 		);
+		if (selectedEntry) {
+			activeBlipRing
+				.attr("cx", selectedEntry.segment.clipx(selectedEntry))
+				.attr("cy", selectedEntry.segment.clipy(selectedEntry));
+		}
 	}
 
 	// distribute blips while avoiding collisions
@@ -803,4 +911,98 @@ function radar_visualization(config) {
 	if (config.print_ring_descriptions_table) {
 		ringDescriptionsTable();
 	}
+
+	const quadrantViewboxes = [
+		"680 500 750 560", // Quadrant 0: Languages & Frameworks (bottom-right)
+		"20 500 750 560", // Quadrant 1: Infrastructure & Tooling (bottom-left)
+		"20 20 750 560", // Quadrant 2: Data Storage & Management (top-left)
+		"680 20 750 560", // Quadrant 3: Patterns & Practices (top-right)
+	];
+
+	function setQuadrantZoom(quadrantIndex) {
+		const targetViewbox =
+			quadrantIndex >= 0 && quadrantIndex < 4
+				? quadrantViewboxes[quadrantIndex]
+				: "0 0 " + scaled_width + " " + scaled_height;
+
+		svg.interrupt();
+		svg
+			.transition()
+			.duration(
+				window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 450,
+			)
+			.ease(d3.easeCubicOut)
+			.attr("viewBox", targetViewbox);
+	}
+
+	function filterEntries(searchTerm, selectedRing, selectedQuadrant) {
+		const term = (searchTerm || "").toLowerCase().trim();
+		const ring =
+			selectedRing !== undefined &&
+			selectedRing !== null &&
+			selectedRing !== "all"
+				? Number(selectedRing)
+				: null;
+		const quad =
+			selectedQuadrant !== undefined &&
+			selectedQuadrant !== null &&
+			selectedQuadrant !== "all"
+				? Number(selectedQuadrant)
+				: null;
+
+		let matchCount = 0;
+		const matchingIds = new Set();
+
+		for (let i = 0; i < config.entries.length; i++) {
+			const entry = config.entries[i];
+			const matchesText = !term || entry.label.toLowerCase().includes(term);
+			const matchesRing = ring === null || entry.ring === ring;
+			const matchesQuad = quad === null || entry.quadrant === quad;
+			if (matchesText && matchesRing && matchesQuad) {
+				matchingIds.add(entry.id);
+				matchCount++;
+			}
+		}
+
+		const hasFilter = term.length > 0 || ring !== null || quad !== null;
+		hideBubble();
+		if (selectedEntry && !matchingIds.has(selectedEntry.id)) selectBlip(null);
+
+		blips.each(function (d) {
+			const el = d3.select(this);
+			const matches = matchingIds.has(d.id);
+			el.style("opacity", matches ? 1 : 0.12)
+				.style("pointer-events", matches ? "all" : "none")
+				.attr("tabindex", matches ? 0 : -1)
+				.attr("aria-hidden", matches ? null : "true");
+		});
+
+		radar.selectAll(".legend-entry").each(function (d) {
+			const el = d3.select(this);
+			const matches = matchingIds.has(d.id);
+			el.style("opacity", matches ? 1 : 0.18)
+				.style("pointer-events", matches ? "all" : "none")
+				.attr("tabindex", matches ? 0 : -1)
+				.attr("aria-hidden", matches ? null : "true");
+			el.select("text").style(
+				"font-weight",
+				hasFilter && matches ? "bold" : "normal",
+			);
+		});
+
+		return {
+			matchCount,
+			total: config.entries.length,
+			matchingIds,
+		};
+	}
+
+	return {
+		zoomQuadrant: setQuadrantZoom,
+		selectBlip: selectBlip,
+		filter: filterEntries,
+		entries: config.entries,
+		quadrants: config.quadrants,
+		rings: config.rings,
+	};
 }

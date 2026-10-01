@@ -5,10 +5,9 @@
   <meta http-equiv="Content-type" content="text/html; charset=utf-8">
   <meta name="description"
         content="LambdaWorks Tech Radar: a tool to visualize technology choices, inspire and support engineering teams at LambdaWorks to pick the best technologies for new projects">
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
   <title>LambdaWorks Tech Radar</title>
-  <link rel="shortcut icon"
-        href="favicon.ico">
+  <link rel="shortcut icon" href="favicon.ico">
 
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="radar.js"></script>
@@ -20,17 +19,26 @@
 
 <div class="container">
   <!-- floating header pill -->
-  <header class="site-header" role="banner">
+  <header class="site-header">
     <div class="header-inner">
       <div class="logo-container">
-        <a href="https://lambdaworks.io" target="_blank" aria-label="LambdaWorks homepage">
-          <img src="logo.svg" alt="LambdaWorks logo" class="logo-svg">
+        <a href="https://lambdaworks.io" target="_blank" rel="noopener" aria-label="LambdaWorks homepage">
+          <img src="logo.svg" alt="LambdaWorks logo" class="logo-svg" width="217" height="24">
         </a>
       </div>
-      <div class="header-links">
+
+      <button type="button" class="mobile-nav-toggle" id="mobile-nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="header-nav">
+        <span class="nav-toggle-icon">
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+      </button>
+
+      <nav class="header-links" id="header-nav" aria-label="Header navigation">
         <a href="https://github.com/lambdaworks/tech-radar" target="_blank" rel="noopener">GitHub Repository</a>
         <a href="https://lambdaworks.io/contact" target="_blank" rel="noopener">Contact Us</a>
-      </div>
+      </nav>
     </div>
   </header>
 
@@ -42,8 +50,97 @@
   </section>
 
   <!-- radar visualization card container -->
-  <main class="radar-card">
-    <svg id="radar" role="img" aria-label="Technology Radar Chart"></svg>
+  <main class="radar-card" id="radar-main" aria-busy="true">
+    <div class="radar-toolbar" id="radar-toolbar" inert>
+      <div class="toolbar-top">
+        <!-- View mode switcher -->
+        <div class="view-toggle" role="group" aria-label="View mode">
+          <button type="button" class="view-btn is-active" id="btn-view-radar" aria-pressed="true">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+            <span>Radar View</span>
+          </button>
+          <button type="button" class="view-btn" id="btn-view-directory" aria-pressed="false">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            <span>Directory View</span>
+          </button>
+        </div>
+
+        <!-- Search bar -->
+        <div class="radar-search-box">
+          <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="search" id="radar-search" placeholder="Search technologies (e.g. React, Kafka)..." aria-label="Search technologies" autocomplete="off" spellcheck="false">
+          <button type="button" id="search-clear-btn" class="search-clear-btn" aria-label="Clear search" hidden>&times;</button>
+        </div>
+      </div>
+
+      <!-- Quadrant zoom tabs -->
+      <div class="quadrant-filter-scroll" role="group" aria-label="Filter by quadrant">
+        <button type="button" class="quadrant-tab is-active" aria-pressed="true" data-quadrant="-1">All Quadrants</button>
+        <button type="button" class="quadrant-tab" aria-pressed="false" data-quadrant="0">Languages &amp; Frameworks</button>
+        <button type="button" class="quadrant-tab" aria-pressed="false" data-quadrant="1">Infrastructure &amp; Tooling</button>
+        <button type="button" class="quadrant-tab" aria-pressed="false" data-quadrant="2">Data Storage &amp; Management</button>
+        <button type="button" class="quadrant-tab" aria-pressed="false" data-quadrant="3">Patterns &amp; Practices</button>
+      </div>
+
+      <!-- Ring filter pills -->
+      <div class="ring-filter-scroll" role="group" aria-label="Filter by ring">
+        <button type="button" class="ring-filter-pill is-active" aria-pressed="true" data-ring="all">All Rings</button>
+        <button type="button" class="ring-filter-pill" aria-pressed="false" data-ring="0"><span class="ring-dot" style="background-color: var(--ring-adopt);"></span>Adopt</button>
+        <button type="button" class="ring-filter-pill" aria-pressed="false" data-ring="1"><span class="ring-dot" style="background-color: var(--ring-trial);"></span>Trial</button>
+        <button type="button" class="ring-filter-pill" aria-pressed="false" data-ring="2"><span class="ring-dot" style="background-color: var(--ring-assess);"></span>Assess</button>
+        <button type="button" class="ring-filter-pill" aria-pressed="false" data-ring="3"><span class="ring-dot" style="background-color: var(--ring-hold);"></span>Hold</button>
+        <button type="button" class="ring-filter-pill" aria-pressed="false" data-ring="4"><span class="ring-dot" style="background-color: var(--ring-phase-out);"></span>Phase Out</button>
+        <button type="button" class="ring-filter-pill" aria-pressed="false" data-ring="5"><span class="ring-dot" style="background-color: var(--ring-opt-out);"></span>Opt Out</button>
+      </div>
+
+      <!-- Filter status bar -->
+      <div class="filter-status-bar" id="filter-status-bar" hidden>
+        <span id="filter-match-count" role="status" aria-live="polite" aria-atomic="true">Showing technologies</span>
+        <button type="button" id="btn-reset-filters" class="reset-filter-btn">Reset filters</button>
+      </div>
+    </div>
+
+    <!-- Mobile interaction helper -->
+    <div class="mobile-radar-hint" hidden>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 11v6M12 7h.01"/></svg>
+      <span>Tap any blip for details, or tap a quadrant tab to zoom in</span>
+    </div>
+
+    <div class="radar-state" id="radar-state">
+      <p id="radar-state-message" role="status">Loading technologies…</p>
+      <button type="button" class="radar-retry-btn" id="radar-retry-btn" hidden>Try again</button>
+    </div>
+
+    <!-- SVG Radar Canvas Viewport -->
+    <div class="radar-viewport" id="radar-viewport" hidden>
+      <svg id="radar" class="is-all-view" role="group" aria-labelledby="radar-title">
+        <title id="radar-title">LambdaWorks Technology Radar Chart</title>
+      </svg>
+    </div>
+
+    <!-- Directory / List View Container -->
+    <div class="directory-view" id="directory-view" hidden>
+      <div class="directory-quadrants" id="directory-quadrants"></div>
+    </div>
+
+    <!-- Selected Technology Detail Card / Drawer -->
+    <div class="blip-detail-card" id="blip-detail-card" hidden role="dialog" aria-modal="false" aria-labelledby="blip-detail-name" tabindex="-1">
+      <div class="blip-detail-header">
+        <div class="blip-detail-title-group">
+          <span class="blip-detail-num" id="blip-detail-id">#1</span>
+          <h3 class="blip-detail-name" id="blip-detail-name">Technology Name</h3>
+        </div>
+        <button type="button" class="blip-detail-close" id="blip-detail-close" aria-label="Close details">&times;</button>
+      </div>
+      <div class="blip-detail-badges">
+        <span class="ring-badge" id="blip-detail-ring">ADOPT</span>
+        <span class="quadrant-badge" id="blip-detail-quadrant">Languages &amp; Frameworks</span>
+        <span class="status-badge" id="blip-detail-status">No change</span>
+      </div>
+      <div class="blip-detail-footer" id="blip-detail-footer">
+        <a href="#" id="blip-detail-link" target="_blank" rel="noopener" class="blip-detail-btn">Visit Website &rarr;</a>
+      </div>
+    </div>
   </main>
 
   <!-- information cards grid -->
@@ -73,7 +170,7 @@
     </div>
 
     <div class="info-card full-width">
-      <h2>Ring Assignments & Semantics</h2>
+      <h2>Ring Assignments &amp; Semantics</h2>
       <p>We classify technologies into six distinct rings, each defining a specific level of adoption and risk:</p>
 
       <div class="rings-grid">
@@ -133,7 +230,6 @@
       </div>
     </div>
 
-
     <div class="info-card full-width">
       <h2>How do we maintain it?</h2>
       <p>
@@ -146,11 +242,11 @@
   </section>
 </div>
 
-<footer class="site-footer" role="contentinfo">
+<footer class="site-footer">
   <div class="container">
     <div>
       &copy; <span id="current-year">2026</span> <a href="https://lambdaworks.io"
-                                                    target="_blank"><strong>LambdaWorks</strong></a>. All rights
+                                                    target="_blank" rel="noopener"><strong>LambdaWorks</strong></a>. All rights
       reserved.
     </div>
     <div>
@@ -161,39 +257,432 @@
 </footer>
 
 <script>
-    document.getElementById('current-year').textContent = new Date().getFullYear();
+    document.getElementById("current-year").textContent = new Date().getFullYear();
 
-    fetch('./config.json').then((response) => response.json()).then((data) => {
-        radar_visualization({
-            repo_url: "https://github.com/lambdaworks/tech-radar",
-            title: "LambdaWorks Tech Radar",
-            date: data.date,
-            quadrants: [
-                {name: "Languages \u0026 Frameworks"},
-                {name: "Infrastructure \u0026 Tooling"},
-                {name: "Data Storage \u0026 Management"},
-                {name: "Patterns \u0026 Practices"},
-            ],
-            rings: [
-                {name: "ADOPT", color: "#c0eec4"},
-                {name: "TRIAL", color: "#8bbaff"},
-                {name: "ASSESS", color: "#ff9d66"},
-                {name: "HOLD", color: "#d0d0d0"},
-                {name: "PHASE OUT", color: "#d4d4ff"},
-                {name: "OPT OUT", color: "#ffe7e7"}
-            ],
-            colors: {
-                background: "#ffffff",
-                grid: "#e5e7eb",
-                inactive: "#9ca3af",
-                blip_stroke: "#000000"
-            },
-            font_family: "Moderat Extended Regular",
-            entries: data.entries
+    // Mobile nav toggle
+    const navToggle = document.getElementById("mobile-nav-toggle");
+    const navLinks = document.getElementById("header-nav");
+
+    if (navToggle && navLinks) {
+        navToggle.addEventListener("click", () => {
+            const isOpen = navLinks.classList.toggle("is-open");
+            navToggle.classList.toggle("is-open", isOpen);
+            navToggle.setAttribute("aria-expanded", String(isOpen));
         });
-    }).catch((err) => {
-        console.log('Error loading config.json', err);
+
+        navLinks.querySelectorAll("a").forEach((link) => {
+            link.addEventListener("click", () => {
+                navLinks.classList.remove("is-open");
+                navToggle.classList.remove("is-open");
+                navToggle.setAttribute("aria-expanded", "false");
+            });
+        });
+
+        document.addEventListener("click", (e) => {
+            if (!navToggle.contains(e.target) && !navLinks.contains(e.target)) {
+                navLinks.classList.remove("is-open");
+                navToggle.classList.remove("is-open");
+                navToggle.setAttribute("aria-expanded", "false");
+            }
+        });
+    }
+
+    let radarController = null;
+    let currentSearch = "";
+    let currentRing = "all";
+    let currentQuadrant = -1;
+    let currentView = "radar";
+    let lastActiveElement = null;
+    let currentDetailId = null;
+
+    const radarSvg = document.getElementById("radar");
+    const detailCard = document.getElementById("blip-detail-card");
+    const searchInput = document.getElementById("radar-search");
+    const searchClearBtn = document.getElementById("search-clear-btn");
+    const filterStatusBar = document.getElementById("filter-status-bar");
+    const filterMatchCount = document.getElementById("filter-match-count");
+    const resetFiltersBtn = document.getElementById("btn-reset-filters");
+    const radarState = document.getElementById("radar-state");
+    const radarStateMessage = document.getElementById("radar-state-message");
+    const mobileHint = document.querySelector(".mobile-radar-hint");
+
+    document.getElementById("radar-retry-btn").addEventListener("click", () => window.location.reload());
+
+    function getMovementLabel(moved) {
+        if (moved === 1) return "▲ Moved up";
+        if (moved === -1) return "▼ Moved down";
+        if (moved === 2) return "★ New entry";
+        return "— No change";
+    }
+
+    function showDetail(d, focusCard = false) {
+        if (!d) {
+            hideDetail();
+            return;
+        }
+
+        if (!detailCard.contains(document.activeElement)) {
+            lastActiveElement = document.activeElement;
+        }
+        currentDetailId = d.id;
+        document.querySelectorAll(".directory-card").forEach((card) => {
+            const isSelected = card.dataset.id === d.id;
+            card.classList.toggle("is-selected", isSelected);
+            card.setAttribute("aria-pressed", String(isSelected));
+        });
+
+        const ringName = radarController.rings[d.ring].name;
+        const ringColor = radarController.rings[d.ring].color;
+        const quadName = radarController.quadrants[d.quadrant].name;
+
+        document.getElementById("blip-detail-id").textContent = "#" + d.id;
+        document.getElementById("blip-detail-name").textContent = d.label;
+
+        const ringEl = document.getElementById("blip-detail-ring");
+        ringEl.textContent = ringName;
+        ringEl.style.backgroundColor = ringColor;
+
+        document.getElementById("blip-detail-quadrant").textContent = quadName;
+        document.getElementById("blip-detail-status").textContent = getMovementLabel(d.moved);
+
+        const footerEl = document.getElementById("blip-detail-footer");
+        const linkEl = document.getElementById("blip-detail-link");
+
+        if (d.link) {
+            linkEl.href = d.link;
+            footerEl.style.display = "flex";
+        } else {
+            footerEl.style.display = "none";
+        }
+
+        detailCard.hidden = false;
+        detailCard.classList.add("is-open");
+        if (focusCard) {
+            detailCard.focus({ preventScroll: true });
+        }
+    }
+
+    function hideDetail() {
+        const restoreFocus = detailCard.contains(document.activeElement);
+        detailCard.hidden = true;
+        detailCard.classList.remove("is-open");
+        currentDetailId = null;
+        document.querySelectorAll(".directory-card.is-selected").forEach((card) => {
+            card.classList.remove("is-selected");
+            card.setAttribute("aria-pressed", "false");
+        });
+        if (restoreFocus && lastActiveElement?.isConnected && !lastActiveElement.closest("[hidden], [aria-hidden='true']")) {
+            lastActiveElement.focus({ preventScroll: true });
+        }
+        lastActiveElement = null;
+    }
+
+    function closeDetail() {
+        if (radarController) radarController.selectBlip(null);
+        else hideDetail();
+    }
+
+    document.getElementById("blip-detail-close").addEventListener("click", closeDetail);
+
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+            closeDetail();
+            if (navLinks?.classList.contains("is-open")) {
+                navLinks.classList.remove("is-open");
+                navToggle.classList.remove("is-open");
+                navToggle.setAttribute("aria-expanded", "false");
+                navToggle.focus({ preventScroll: true });
+            }
+        }
     });
+
+    document.addEventListener("click", (e) => {
+        if (!detailCard.hidden &&
+            !detailCard.contains(e.target) &&
+            !e.target.closest(".blip") &&
+            !e.target.closest(".directory-card") &&
+            !e.target.closest(".legend-entry")) {
+            closeDetail();
+        }
+    });
+
+    function applyFilters() {
+        if (!radarController) return;
+
+        const quadParam = currentQuadrant === -1 ? null : currentQuadrant;
+        const result = radarController.filter(currentSearch, currentRing, quadParam);
+        if (currentDetailId && !result.matchingIds.has(currentDetailId)) closeDetail();
+
+        const hasActiveFilter = currentSearch.trim().length > 0 || currentRing !== "all" || currentQuadrant !== -1;
+
+        if (hasActiveFilter) {
+            filterStatusBar.hidden = false;
+            filterMatchCount.textContent = `Showing ${result.matchCount} of ${result.total} technologies`;
+        } else {
+            filterStatusBar.hidden = true;
+        }
+
+        const hasMatches = result.matchCount > 0;
+        radarState.hidden = hasMatches;
+        radarStateMessage.textContent = "No technologies match these filters.";
+        radarViewport.hidden = currentView !== "radar" || !hasMatches;
+        directoryView.hidden = currentView !== "directory" || !hasMatches;
+        mobileHint.hidden = currentView !== "radar" || !hasMatches;
+
+        // Filter cards in Directory View
+        const cards = document.querySelectorAll(".directory-card");
+        cards.forEach((card) => {
+            const id = card.dataset.id;
+            const isMatch = result.matchingIds.has(id);
+            card.hidden = !isMatch;
+        });
+
+        // Keep quadrant counts in sync with the visible results
+        document.querySelectorAll(".directory-quadrant-group").forEach((group) => {
+            const quadId = Number(group.dataset.quadrant);
+            const isQuadMatch = currentQuadrant === -1 || currentQuadrant === quadId;
+
+            const visibleCount = group.querySelectorAll(".directory-card:not([hidden])").length;
+            group.hidden = !isQuadMatch || visibleCount === 0;
+            group.querySelector(".directory-quadrant-count").textContent = visibleCount;
+        });
+    }
+
+    function renderDirectory(entries, quadrants, rings) {
+        const container = document.getElementById("directory-quadrants");
+        container.innerHTML = "";
+
+        for (let q = 0; q < quadrants.length; q++) {
+            const qGroup = document.createElement("div");
+            qGroup.className = "directory-quadrant-group";
+            qGroup.dataset.quadrant = String(q);
+
+            const qEntries = entries.filter((e) => e.quadrant === q);
+            qEntries.sort((a, b) => a.label.localeCompare(b.label));
+
+            const qHeader = document.createElement("h2");
+            qHeader.className = "directory-quadrant-title";
+            qHeader.innerHTML = `<span>${quadrants[q].name}</span><span class="directory-quadrant-count">${qEntries.length}</span>`;
+            qGroup.appendChild(qHeader);
+
+            const grid = document.createElement("div");
+            grid.className = "directory-grid";
+
+            for (const entry of qEntries) {
+                const card = document.createElement("button");
+                card.type = "button";
+                card.className = "directory-card";
+                card.dataset.id = entry.id;
+                card.setAttribute("aria-pressed", "false");
+                card.setAttribute("aria-label", `${entry.label}, ${rings[entry.ring].name}`);
+
+                const ring = rings[entry.ring];
+
+                card.innerHTML = `
+                    <span class="directory-card-top">
+                        <span class="directory-card-name">${entry.label}</span>
+                        <span class="directory-card-id">#${entry.id}</span>
+                    </span>
+                    <span class="directory-card-bottom">
+                        <span class="ring-badge" style="background-color: ${ring.color};">${ring.name}</span>
+                        <span class="directory-card-movement">${getMovementLabel(entry.moved)}</span>
+                    </span>
+                `;
+
+                card.addEventListener("click", (event) => {
+                    radarController.selectBlip(entry, event.detail === 0);
+                });
+
+                grid.appendChild(card);
+            }
+
+            qGroup.appendChild(grid);
+
+            container.appendChild(qGroup);
+        }
+    }
+
+    // View switcher
+    const btnRadar = document.getElementById("btn-view-radar");
+    const btnDirectory = document.getElementById("btn-view-directory");
+    const radarViewport = document.getElementById("radar-viewport");
+    const directoryView = document.getElementById("directory-view");
+
+    function setView(view) {
+        currentView = view;
+        closeDetail();
+        btnRadar.classList.toggle("is-active", view === "radar");
+        btnRadar.setAttribute("aria-pressed", String(view === "radar"));
+        btnDirectory.classList.toggle("is-active", view === "directory");
+        btnDirectory.setAttribute("aria-pressed", String(view === "directory"));
+        applyFilters();
+    }
+
+    btnRadar.addEventListener("click", () => setView("radar"));
+    btnDirectory.addEventListener("click", () => setView("directory"));
+
+    // Search events
+    searchInput.addEventListener("input", (e) => {
+        currentSearch = e.target.value;
+        searchClearBtn.hidden = currentSearch.length === 0;
+        applyFilters();
+    });
+
+    searchInput.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && searchInput.value) {
+            e.stopPropagation();
+            searchInput.value = "";
+            currentSearch = "";
+            searchClearBtn.hidden = true;
+            applyFilters();
+        }
+    });
+
+    searchClearBtn.addEventListener("click", () => {
+        searchInput.value = "";
+        currentSearch = "";
+        searchClearBtn.hidden = true;
+        applyFilters();
+        searchInput.focus();
+    });
+
+    // Quadrant tab events
+    const quadrantTabs = document.querySelectorAll(".quadrant-tab");
+    quadrantTabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+            quadrantTabs.forEach((t) => {
+                t.classList.remove("is-active");
+                t.setAttribute("aria-pressed", "false");
+            });
+            tab.classList.add("is-active");
+            tab.setAttribute("aria-pressed", "true");
+            tab.scrollIntoView({ block: "nearest", inline: "nearest" });
+            radarViewport.scrollLeft = 0;
+
+            currentQuadrant = Number(tab.dataset.quadrant);
+
+            if (radarController) {
+                if (currentQuadrant === -1) {
+                    radarSvg.classList.add("is-all-view");
+                    radarSvg.classList.remove("is-zoomed-view");
+                    radarController.zoomQuadrant(-1);
+                } else {
+                    radarSvg.classList.remove("is-all-view");
+                    radarSvg.classList.add("is-zoomed-view");
+                    radarController.zoomQuadrant(currentQuadrant);
+                }
+            }
+
+            applyFilters();
+        });
+    });
+
+    // Ring pill events
+    const ringPills = document.querySelectorAll(".ring-filter-pill");
+    ringPills.forEach((pill) => {
+        pill.addEventListener("click", () => {
+            ringPills.forEach((p) => {
+                p.classList.remove("is-active");
+                p.setAttribute("aria-pressed", "false");
+            });
+            pill.classList.add("is-active");
+            pill.setAttribute("aria-pressed", "true");
+            currentRing = pill.dataset.ring;
+            applyFilters();
+        });
+    });
+
+    // Reset filters
+    resetFiltersBtn.addEventListener("click", () => {
+        searchInput.value = "";
+        currentSearch = "";
+        searchClearBtn.hidden = true;
+
+        ringPills.forEach((p) => {
+            p.classList.remove("is-active");
+            p.setAttribute("aria-pressed", "false");
+        });
+        document.querySelector(".ring-filter-pill[data-ring='all']").classList.add("is-active");
+        document.querySelector(".ring-filter-pill[data-ring='all']").setAttribute("aria-pressed", "true");
+        currentRing = "all";
+
+        quadrantTabs.forEach((t) => {
+            t.classList.remove("is-active");
+            t.setAttribute("aria-pressed", "false");
+        });
+        document.querySelector(".quadrant-tab[data-quadrant='-1']").classList.add("is-active");
+        document.querySelector(".quadrant-tab[data-quadrant='-1']").setAttribute("aria-pressed", "true");
+        currentQuadrant = -1;
+        document.querySelector(".quadrant-filter-scroll").scrollLeft = 0;
+        document.querySelector(".ring-filter-scroll").scrollLeft = 0;
+        radarViewport.scrollLeft = 0;
+
+        if (radarController) {
+            radarSvg.classList.add("is-all-view");
+            radarSvg.classList.remove("is-zoomed-view");
+            radarController.zoomQuadrant(-1);
+            radarController.selectBlip(null);
+        }
+
+        applyFilters();
+    });
+
+    fetch("./config.json")
+        .then((response) => {
+            if (!response.ok) throw new Error("Could not load radar data");
+            return response.json();
+        })
+        .then(async (data) => {
+            await document.fonts.ready;
+            // SVG text measurements need a visible canvas and the final font.
+            radarViewport.hidden = false;
+            radarController = radar_visualization({
+                repo_url: "https://github.com/lambdaworks/tech-radar",
+                title: "LambdaWorks Tech Radar",
+                date: data.date,
+                quadrants: [
+                    {name: "Languages \u0026 Frameworks"},
+                    {name: "Infrastructure \u0026 Tooling"},
+                    {name: "Data Storage \u0026 Management"},
+                    {name: "Patterns \u0026 Practices"},
+                ],
+                rings: [
+                    {name: "ADOPT", color: "#c0eec4"},
+                    {name: "TRIAL", color: "#8bbaff"},
+                    {name: "ASSESS", color: "#ff9d66"},
+                    {name: "HOLD", color: "#d0d0d0"},
+                    {name: "PHASE OUT", color: "#d4d4ff"},
+                    {name: "OPT OUT", color: "#ffe7e7"}
+                ],
+                colors: {
+                    background: "#ffffff",
+                    grid: "#e5e7eb",
+                    inactive: "#9ca3af",
+                    blip_stroke: "#000000"
+                },
+                font_family: "Moderat Extended Regular",
+                entries: data.entries,
+                onSelect: (entry, isKeyboard) => {
+                    showDetail(entry, Boolean(isKeyboard));
+                }
+            });
+
+            renderDirectory(radarController.entries, radarController.quadrants, radarController.rings);
+            document.getElementById("radar-toolbar").inert = false;
+            document.getElementById("radar-main").setAttribute("aria-busy", "false");
+            applyFilters();
+        })
+        .catch((err) => {
+            document.getElementById("radar-main").setAttribute("aria-busy", "false");
+            document.getElementById("radar-toolbar").inert = true;
+            radarViewport.hidden = true;
+            directoryView.hidden = true;
+            mobileHint.hidden = true;
+            radarState.hidden = false;
+            radarStateMessage.textContent = "We couldn’t load the technologies. Please try again.";
+            document.getElementById("radar-retry-btn").hidden = false;
+            console.error("Error loading config.json", err);
+        });
 </script>
 
 </body>
